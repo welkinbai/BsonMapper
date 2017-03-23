@@ -1,5 +1,7 @@
 package me.welkinbai.bsonmapper;
 
+import me.welkinbai.bsonmapper.annotations.BsonField;
+import me.welkinbai.bsonmapper.annotations.BsonIgnore;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 
 import java.lang.reflect.Field;
@@ -68,7 +70,7 @@ class Utils {
         }
     }
 
-    public static Class<?> giveImplClass(Class<?> fieldType) {
+    public static Class<?> giveImplClassIfSupport(Class<?> fieldType) {
         if (List.class.isAssignableFrom(fieldType)) {
             return ArrayList.class;
         }
@@ -79,16 +81,21 @@ class Utils {
     }
 
     public static boolean isUnableAddCollectionClazz(Class<?> fieldType) {
-        return fieldType.isInterface() || Modifier.isAbstract(fieldType.getModifiers())
-                || !List.class.isAssignableFrom(fieldType)
-                || !Set.class.isAssignableFrom(fieldType);
+        return fieldType.isInterface() || Modifier.isAbstract(fieldType.getModifiers());
     }
 
-    /*public static void main(String[] args) {
-        List<Field> allField = Utils.getAllField(ArrayList.class);
-        for (Field field : allField) {
-            System.out.println(field);
+    public static String getBsonName(Field field) {
+        String bsonName = field.getName();
+        BsonField bsonField = field.getAnnotation(BsonField.class);
+        if (bsonField != null) {
+            bsonName = bsonField.value();
         }
-    }*/
+        return bsonName;
+    }
+
+    public static boolean isIgnored(Field field) {
+        BsonIgnore bsonIgnore = field.getAnnotation(BsonIgnore.class);
+        return bsonIgnore != null;
+    }
 
 }
