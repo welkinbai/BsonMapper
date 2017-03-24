@@ -25,9 +25,13 @@ class BsonDocumentConverter {
     }
 
     <T> T decode(BsonDocument bsonDocument, Class<T> targetClazz) {
+        if (BsonValueConverterRepertory.isValueSupportClazz(targetClazz)) {
+            throw new BsonMapperConverterException("targetClazz should not be a common value Clazz.It should be a real Object.clazz name:" + targetClazz.getName());
+        }
         if (bsonDocument == null) {
             return null;
         }
+
         List<Field> allField = Utils.getAllField(targetClazz);
         T target = Utils.newInstanceByClazz(targetClazz);
         for (Field field : allField) {
@@ -61,23 +65,12 @@ class BsonDocumentConverter {
 
     private Object getJavaValueFromBsonValue(BsonValue bsonValue, Field field) {
         if (bsonValue.isArray()) {
-            return BsonArrayConverter.getInstance().decode(bsonValue.asArray(), field);
+            return BsonValueConverterRepertory.getBsonArrayConverter().decode(bsonValue.asArray(), field);
         }
-        return getJavaValueFromBsonValue(bsonValue, field.getType());
-    }
-
-    private Object getJavaValueFromBsonValue(BsonValue bsonValue, Class<?> targetClass) {
-        switch (bsonValue.getBsonType()) {
-            case DOUBLE:
-                return bsonValue.asDouble().getValue();
-            case STRING:
-                return bsonValue.asString().getValue();
-            case DOCUMENT:
-                return decode(bsonValue.asDocument(), targetClass);
-            case ARRAY:
-                throw new IllegalArgumentException("should never be happen.");
+        if (bsonValue.isDocument()) {
+            return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonValue.asDocument(), field.getType());
         }
-        return null;
+        return BsonValueConverterRepertory.getConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
     }
 
 }

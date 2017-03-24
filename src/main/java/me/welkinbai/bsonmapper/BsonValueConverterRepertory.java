@@ -1,5 +1,6 @@
 package me.welkinbai.bsonmapper;
 
+import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonType;
 import org.bson.codecs.BsonTypeClassMap;
 
@@ -10,23 +11,36 @@ import java.util.Map;
  * Created by baixiaoxuan on 2017/3/23.
  */
 public class BsonValueConverterRepertory {
-    private final static Map<Class<?>, BsonValueConverter> classBsonValueConverterMap = new HashMap<Class<?>, BsonValueConverter>();
-    private final static BsonTypeClassMap bsonTypeClassMap = new BsonTypeClassMap();
+    private final static Map<Class<?>, BsonValueConverter> CLASS_BSON_VALUE_CONVERTER_MAP = new HashMap<Class<?>, BsonValueConverter>();
+    private final static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
+    private final static BsonDocumentConverter BSON_DOCUMENT_CONVERTER = BsonDocumentConverter.getInstance();
+    private final static BsonArrayConverter BSON_ARRAY_CONVERTER = BsonArrayConverter.getInstance();
 
     private BsonValueConverterRepertory() {
     }
 
     static {
-        classBsonValueConverterMap.put(String.class, BsonStringConverter.getInstance());
-        classBsonValueConverterMap.put(Double.class, BsonDoubleConverter.getInstance());
+        CLASS_BSON_VALUE_CONVERTER_MAP.put(String.class, BsonStringConverter.getInstance());
+        CLASS_BSON_VALUE_CONVERTER_MAP.put(Double.class, BsonDoubleConverter.getInstance());
     }
 
     public static BsonValueConverter getConverterByBsonType(BsonType bsonType) {
-        Class<?> clazz = bsonTypeClassMap.get(bsonType);
+        Class<?> clazz = BSON_TYPE_CLASS_MAP.get(bsonType);
         if (clazz == null) {
-            return null;
+            throw new BsonMapperConverterException("can find BsonValueConverter for bsonType:" + bsonType);
         }
-        return classBsonValueConverterMap.get(clazz);
+        return CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
     }
 
+    public static BsonDocumentConverter getBsonDocumentConverter() {
+        return BSON_DOCUMENT_CONVERTER;
+    }
+
+    public static BsonArrayConverter getBsonArrayConverter() {
+        return BSON_ARRAY_CONVERTER;
+    }
+
+    public static <T> boolean isValueSupportClazz(Class<T> targetClazz) {
+        return CLASS_BSON_VALUE_CONVERTER_MAP.keySet().contains(targetClazz);
+    }
 }

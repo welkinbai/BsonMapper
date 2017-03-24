@@ -72,7 +72,12 @@ public class BsonArrayConverter {
                 BsonArray array = bsonValue.asArray();
                 Utils.methodInvoke(method, collectionObject, decode(array, targetComponentClazz, targetType));
             } else {
-                Object javaValue = BsonValueConverterRepertory.getConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
+                Object javaValue;
+                if (bsonValue.isDocument()) {
+                    javaValue = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonValue.asDocument(), targetComponentClazz);
+                } else {
+                    javaValue = BsonValueConverterRepertory.getConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
+                }
                 Utils.methodInvoke(method, collectionObject, javaValue);
             }
         }

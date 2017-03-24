@@ -15,7 +15,7 @@ public class DefaultBsonMapper implements BsonMapper {
     @Override
     public <T> T readFrom(BsonDocument bsonDocument, Class<T> targetClazz) {
         checkNotNull(targetClazz, "targetClazz should not be Null!");
-        return BsonDocumentConverter.getInstance().decode(bsonDocument, targetClazz);
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonDocument, targetClazz);
     }
 
     @Override
