@@ -87,10 +87,14 @@ class Utils {
     public static String getBsonName(Field field) {
         String bsonName = field.getName();
         BsonField bsonField = field.getAnnotation(BsonField.class);
-        if (bsonField != null) {
+        if (bsonField != null && !isStrEmpty(bsonField.value())) {
             bsonName = bsonField.value();
         }
         return bsonName;
+    }
+
+    public static boolean isStrEmpty(String str) {
+        return str == null || str.length() == 0;
     }
 
     public static boolean isIgnored(Field field) {
@@ -98,4 +102,8 @@ class Utils {
         return bsonIgnore != null;
     }
 
+    public static boolean fieldIsObjectId(Field field) {
+        BsonField annotation = field.getAnnotation(BsonField.class);
+        return annotation != null && annotation.IsObjectId();
+    }
 }

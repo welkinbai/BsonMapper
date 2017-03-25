@@ -3,6 +3,7 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonDocument;
 import org.bson.BsonValue;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -38,11 +39,17 @@ class BsonDocumentConverter {
             if (isIgnored(field)) {
                 continue;
             }
-            BsonValue bsonValue = bsonDocument.get(getBsonName(field));
-            if (bsonValue == null) {
+            String bsonName = getBsonName(field);
+            BsonValue bsonValue = bsonDocument.get(bsonName);
+            if (bsonValue == null || bsonValue.isNull()) {
                 continue;
             }
-            Object javaValue = getJavaValueFromBsonValue(bsonValue, field);
+            Object javaValue;
+            try {
+                javaValue = getJavaValueFromBsonValue(bsonValue, field);
+            } catch (BsonMapperConverterException e) {
+                throw new BsonMapperConverterException("error when try to get java value from Bson.BsonName:" + bsonName, e);
+            }
             if (Modifier.isPrivate(field.getModifiers())) {
                 field.setAccessible(true);
             }
@@ -70,7 +77,18 @@ class BsonDocumentConverter {
         if (bsonValue.isDocument()) {
             return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonValue.asDocument(), field.getType());
         }
+        if (bsonValue.isObjectId() && Utils.fieldIsObjectId(field)) {
+            ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
+            if (field.getType() == String.class) {
+                return objectId.toHexString();
+            } else if (field.getType() == ObjectId.class) {
+                return objectId;
+            } else {
+                throw new BsonMapperConverterException("BsonValue ObjectId just can be converted to String or ObjectId.");
+            }
+        }
         return BsonValueConverterRepertory.getConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
     }
+
 
 }

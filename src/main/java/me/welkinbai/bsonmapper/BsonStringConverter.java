@@ -5,7 +5,7 @@ import org.bson.BsonValue;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-public class BsonStringConverter implements BsonValueConverter<String> {
+class BsonStringConverter implements BsonValueConverter<String> {
 
     private BsonStringConverter() {
     }

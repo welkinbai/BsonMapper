@@ -11,5 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.FIELD)
 public @interface BsonField {
-    String value();
+    String value() default "";
+    boolean IsObjectId() default false;
 }

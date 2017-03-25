@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-public class BsonArrayConverter {
+class BsonArrayConverter {
 
     private BsonArrayConverter() {
     }
