@@ -3,6 +3,7 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.annotations.BsonField;
 import me.welkinbai.bsonmapper.annotations.BsonIgnore;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -105,5 +106,15 @@ class Utils {
     public static boolean fieldIsObjectId(Field field) {
         BsonField annotation = field.getAnnotation(BsonField.class);
         return annotation != null && annotation.IsObjectId();
+    }
+
+    public static Object getObjectIdByRealType(Class<?> fieldType, ObjectId objectId) {
+        if (fieldType == String.class) {
+            return objectId.toHexString();
+        } else if (fieldType == ObjectId.class) {
+            return objectId;
+        } else {
+            throw new BsonMapperConverterException("BsonValue ObjectId just can be converted to String or ObjectId.");
+        }
     }
 }

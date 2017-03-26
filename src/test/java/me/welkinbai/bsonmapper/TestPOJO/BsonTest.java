@@ -26,6 +26,8 @@ public class BsonTest {
     private boolean testBooean;
     private Date testDate;
     private BsonTest testNull;
+    private Integer testInt;
+    private Long testLong;
 
     public Double getTestDouble() {
         return testDouble;
@@ -72,6 +74,14 @@ public class BsonTest {
 //    }
 
 
+    public Integer getTestInt() {
+        return testInt;
+    }
+
+    public Long getTestLong() {
+        return testLong;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BsonTest{");
@@ -84,7 +94,11 @@ public class BsonTest {
         sb.append(", testStringObjectId='").append(testStringObjectId).append('\'');
         sb.append(", testBooean=").append(testBooean);
         sb.append(", testDate=").append(testDate);
+        sb.append(", testNull=").append(testNull);
+        sb.append(", testInt=").append(testInt);
+        sb.append(", testLong=").append(testLong);
         sb.append('}');
         return sb.toString();
     }
+
 }

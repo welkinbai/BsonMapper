@@ -5,6 +5,8 @@ import org.bson.BsonValue;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-public interface BsonValueConverter<T> {
+public interface BsonValueConverter<T> extends BsonConverter {
+
     T decode(BsonValue bsonValue);
+
 }

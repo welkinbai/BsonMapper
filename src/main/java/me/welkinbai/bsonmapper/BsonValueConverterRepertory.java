@@ -16,6 +16,7 @@ import org.bson.types.MinKey;
 import org.bson.types.ObjectId;
 import org.bson.types.Symbol;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
  * Created by baixiaoxuan on 2017/3/23.
  */
 public class BsonValueConverterRepertory {
-    private final static Map<Class<?>, BsonValueConverter> CLASS_BSON_VALUE_CONVERTER_MAP = new HashMap<Class<?>, BsonValueConverter>();
+    private final static Map<Class<?>, BsonConverter> CLASS_BSON_VALUE_CONVERTER_MAP = new HashMap<Class<?>, BsonConverter>();
     private final static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
     private final static BsonDocumentConverter BSON_DOCUMENT_CONVERTER = BsonDocumentConverter.getInstance();
     private final static BsonArrayConverter BSON_ARRAY_CONVERTER = BsonArrayConverter.getInstance();
@@ -53,12 +54,22 @@ public class BsonValueConverterRepertory {
         CLASS_BSON_VALUE_CONVERTER_MAP.put(MaxKey.class, BsonMaxKeyConverter.getInstance());
     }
 
-    public static BsonValueConverter getConverterByBsonType(BsonType bsonType) {
+    public static BsonValueConverter getValueConverterByBsonType(BsonType bsonType) {
+        Class<?> clazz = getClazzByBsonType(bsonType);
+        return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+    }
+
+    public static BsonBinaryReaderConverter getBinaryReaderConverterByBsonType(BsonType bsonType) {
+        Class<?> clazz = getClazzByBsonType(bsonType);
+        return (BsonBinaryReaderConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+    }
+
+    private static Class<?> getClazzByBsonType(BsonType bsonType) {
         Class<?> clazz = BSON_TYPE_CLASS_MAP.get(bsonType);
         if (clazz == null) {
             throw new BsonMapperConverterException("can find BsonValueConverter for bsonType:" + bsonType);
         }
-        return CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+        return clazz;
     }
 
     public static BsonDocumentConverter getBsonDocumentConverter() {
@@ -70,6 +81,7 @@ public class BsonValueConverterRepertory {
     }
 
     public static boolean isValueSupportClazz(Class<?> targetClazz) {
-        return CLASS_BSON_VALUE_CONVERTER_MAP.keySet().contains(targetClazz);
+        return CLASS_BSON_VALUE_CONVERTER_MAP.keySet().contains(targetClazz) || Collection.class.isAssignableFrom(targetClazz)
+                || targetClazz.isArray();
     }
 }

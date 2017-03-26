@@ -7,6 +7,8 @@ import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
 import org.bson.BsonDouble;
+import org.bson.BsonInt32;
+import org.bson.BsonInt64;
 import org.bson.BsonNull;
 import org.bson.BsonObjectId;
 import org.bson.BsonString;
@@ -50,7 +52,9 @@ public class BsonDocumentConverterTest {
                 .append("testStringObjectId", new BsonObjectId())
                 .append("testBooean", new BsonBoolean(true))
                 .append("testDate", new BsonDateTime(new Date().getTime()))
-                .append("testNull", new BsonNull());
+                .append("testNull", new BsonNull())
+                .append("testInt", new BsonInt32(233))
+                .append("testLong", new BsonInt64(233332));
         BsonTest bsonTest = BsonDocumentConverter.getInstance().decode(bsonDocument1, BsonTest.class);
         System.out.println(bsonTest.getTestDouble());
         System.out.println(bsonTest.getTestString());
@@ -61,6 +65,8 @@ public class BsonDocumentConverterTest {
         System.out.println(bsonTest.isTestBooean());
         System.out.println(bsonTest.getTestDate());
         System.out.println(bsonTest.getTestNull());
+        System.out.println(bsonTest.getTestInt());
+        System.out.println(bsonTest.getTestLong());
         System.out.println(bsonTest);
     }
 

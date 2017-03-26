@@ -20,7 +20,8 @@ public class DefaultBsonMapper implements BsonMapper {
 
     @Override
     public <T> T readFrom(ByteBuffer byteBuffer, Class<T> targetClazz) {
-        return null;
+        checkNotNull(targetClazz, "targetClazz should not be Null!");
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(byteBuffer, targetClazz);
     }
 
     @Override
