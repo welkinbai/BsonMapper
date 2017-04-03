@@ -3,8 +3,11 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonBinaryReader;
 import org.bson.BsonDocument;
+import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
+import org.bson.io.BsonInput;
+import org.bson.json.JsonReader;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
@@ -87,8 +90,30 @@ class BsonDocumentConverter {
         return this.decode(bsonBinaryReader, targetClazz);
     }
 
-    <T> T decode(BsonBinaryReader bsonBinaryReader, Class<T> targetClazz) {
-        bsonBinaryReader.readStartDocument();
+    <T> T decode(BsonInput bsonInput, Class<T> targetClazz) {
+        if (BsonValueConverterRepertory.isValueSupportClazz(targetClazz)) {
+            throw new BsonMapperConverterException("targetClazz should not be a common value Clazz or Collection/Array Clazz.It should be a real Object.clazz name:" + targetClazz.getName());
+        }
+        if (bsonInput == null) {
+            return null;
+        }
+        BsonBinaryReader bsonBinaryReader = new BsonBinaryReader(bsonInput);
+        return this.decode(bsonBinaryReader, targetClazz);
+    }
+
+    <T> T decode(String jsonString, Class<T> targetClazz) {
+        if (BsonValueConverterRepertory.isValueSupportClazz(targetClazz)) {
+            throw new BsonMapperConverterException("targetClazz should not be a common value Clazz or Collection/Array Clazz.It should be a real Object.clazz name:" + targetClazz.getName());
+        }
+        if (Utils.isStrEmpty(jsonString)) {
+            return null;
+        }
+        JsonReader jsonReader = new JsonReader(jsonString);
+        return this.decode(jsonReader, targetClazz);
+    }
+
+    <T> T decode(BsonReader bsonReader, Class<T> targetClazz) {
+        bsonReader.readStartDocument();
         List<Field> allField = Utils.getAllField(targetClazz);
         Map<String, Field> bsonNameFieldInfoMap = new HashMap<String, Field>();
         for (Field field : allField) {
@@ -96,21 +121,21 @@ class BsonDocumentConverter {
             bsonNameFieldInfoMap.put(bsonName, field);
         }
         T target = Utils.newInstanceByClazz(targetClazz);
-        while (bsonBinaryReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
-            String bsonName = bsonBinaryReader.readName();
+        while (bsonReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
+            String bsonName = bsonReader.readName();
             Field field = bsonNameFieldInfoMap.get(bsonName);
             if (field == null) {
                 continue;
             }
             Object javaValue;
             try {
-                javaValue = getJavaValueByBinaryReader(bsonBinaryReader, field);
+                javaValue = getJavaValueByBinaryReader(bsonReader, field);
             } catch (BsonMapperConverterException e) {
                 throw new BsonMapperConverterException("error when try to get java value from Bson.BsonName:" + bsonName, e);
             }
             setJavaValueToField(targetClazz, target, field, javaValue);
         }
-        bsonBinaryReader.readEndDocument();
+        bsonReader.readEndDocument();
         return target;
     }
 
@@ -118,19 +143,19 @@ class BsonDocumentConverter {
         Utils.methodInvoke(setter, target, javaValue);
     }
 
-    private Object getJavaValueByBinaryReader(BsonBinaryReader bsonBinaryReader, Field field) {
-        BsonType currentBsonType = bsonBinaryReader.getCurrentBsonType();
+    private Object getJavaValueByBinaryReader(BsonReader binaryReader, Field field) {
+        BsonType currentBsonType = binaryReader.getCurrentBsonType();
         if (currentBsonType == BsonType.DOCUMENT) {
-            return decode(bsonBinaryReader, field.getType());
+            return decode(binaryReader, field.getType());
         }
         if (currentBsonType == BsonType.ARRAY) {
-            return BsonValueConverterRepertory.getBsonArrayConverter().decode(bsonBinaryReader, field);
+            return BsonValueConverterRepertory.getBsonArrayConverter().decode(binaryReader, field);
         }
         if (currentBsonType == BsonType.OBJECT_ID) {
-            ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonBinaryReader);
+            ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(binaryReader);
             return getObjectIdByRealType(field.getType(), objectId);
         }
-        return BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonBinaryReader);
+        return BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(binaryReader);
     }
 
     private Object getJavaValueFromBsonValue(BsonValue bsonValue, Field field) {
@@ -146,6 +171,5 @@ class BsonDocumentConverter {
         }
         return BsonValueConverterRepertory.getValueConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
     }
-
 
 }

@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.ObjectId;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonObjectIdConverter implements BsonValueConverter<ObjectId>, BsonBinaryReaderConverter<ObjectId> {
+class BsonObjectIdConverter implements BsonValueConverter<ObjectId>, BsonReaderConverter<ObjectId> {
 
     private BsonObjectIdConverter() {
     }
@@ -22,7 +22,7 @@ class BsonObjectIdConverter implements BsonValueConverter<ObjectId>, BsonBinaryR
     }
 
     @Override
-    public ObjectId decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.readObjectId();
+    public ObjectId decode(BsonReader binaryReader) {
+        return binaryReader.readObjectId();
     }
 }

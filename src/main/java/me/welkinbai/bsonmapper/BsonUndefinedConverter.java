@@ -1,14 +1,14 @@
 package me.welkinbai.bsonmapper;
 
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonUndefined;
 import org.bson.BsonValue;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined>, BsonBinaryReaderConverter<BsonUndefined> {
+class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined>, BsonReaderConverter<BsonUndefined> {
 
     private BsonUndefinedConverter() {
     }
@@ -23,7 +23,7 @@ class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined>, BsonB
     }
 
     @Override
-    public BsonUndefined decode(BsonBinaryReader bsonBinaryReader) {
+    public BsonUndefined decode(BsonReader bsonReader) {
         throw new BsonMapperConverterException("BsonUndefined type is not support");
     }
 }

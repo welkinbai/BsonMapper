@@ -26,12 +26,14 @@ public class DefaultBsonMapper implements BsonMapper {
 
     @Override
     public <T> T readFrom(BsonInput bsonInput, Class<T> targetClazz) {
-        return null;
+        checkNotNull(targetClazz, "targetClazz should not be Null!");
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonInput, targetClazz);
     }
 
     @Override
     public <T> T readFrom(String jsonString, Class<T> targetClazz) {
-        return null;
+        checkNotNull(targetClazz, "targetClazz should not be Null!");
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(jsonString, targetClazz);
     }
 
 }

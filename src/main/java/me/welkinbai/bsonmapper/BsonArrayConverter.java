@@ -3,7 +3,7 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.annotations.BsonArrayField;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonArray;
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
 import org.bson.types.ObjectId;
@@ -45,10 +45,10 @@ class BsonArrayConverter {
         }
     }
 
-    Object decode(BsonBinaryReader bsonBinaryReader, Field field) {
+    Object decode(BsonReader bsonReader, Field field) {
         Class<?> fieldType = field.getType();
         if (fieldType.isArray()) {
-            return handleArray(bsonBinaryReader, field.getType());
+            return handleArray(bsonReader, field.getType());
         } else if (Collection.class.isAssignableFrom(fieldType)) {
             Class<?> implClass = Utils.giveImplClassIfSupport(fieldType);
             if (Utils.isUnableAddCollectionClazz(implClass)) {
@@ -58,25 +58,25 @@ class BsonArrayConverter {
             if (bsonArrayField == null) {
                 throw new BsonMapperConverterException(String.format("field %s need @BsonArrayField for Collection field.If you don't want to decode the field, add @BsonIgnore for it.", field.getName()));
             }
-            return decode(bsonBinaryReader, bsonArrayField.componentType(), implClass);
+            return decode(bsonReader, bsonArrayField.componentType(), implClass);
         } else {
             throw new BsonMapperConverterException(String.format("field %s should be array or Collection because there is a BsonArray in BsonDocument,BsonName is %s", field.getName(), Utils.getBsonName(field)));
         }
     }
 
-    private Object handleArray(BsonBinaryReader bsonBinaryReader, Class<?> fieldType) {
+    private Object handleArray(BsonReader bsonReader, Class<?> fieldType) {
         ArrayList<Object> arrayList = new ArrayList<Object>();
-        bsonBinaryReader.readStartArray();
-        while (bsonBinaryReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
-            BsonType currentBsonType = bsonBinaryReader.getCurrentBsonType();
+        bsonReader.readStartArray();
+        while (bsonReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
+            BsonType currentBsonType = bsonReader.getCurrentBsonType();
             if (currentBsonType == BsonType.ARRAY) {
-                arrayList.add(handleArray(bsonBinaryReader, fieldType.getComponentType()));
+                arrayList.add(handleArray(bsonReader, fieldType.getComponentType()));
             } else {
-                Object javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonBinaryReader);
+                Object javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
                 arrayList.add(javaValue);
             }
         }
-        bsonBinaryReader.readEndArray();
+        bsonReader.readEndArray();
         return arrayList.toArray((Object[]) Array.newInstance(fieldType.getComponentType(), 0));
     }
 
@@ -121,7 +121,7 @@ class BsonArrayConverter {
         return collectionObject;
     }
 
-    Object decode(BsonBinaryReader bsonBinaryReader, Class<?> targetComponentClazz, Class<?> targetType) {
+    Object decode(BsonReader bsonReader, Class<?> targetComponentClazz, Class<?> targetType) {
         Object collectionObject = Utils.newInstanceByClazz(targetType);
         Method method = null;
         try {
@@ -129,20 +129,20 @@ class BsonArrayConverter {
         } catch (NoSuchMethodException e) {
             throw new BsonMapperConverterException("NoSuchMethodException", e);
         }
-        bsonBinaryReader.readStartArray();
-        while (bsonBinaryReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
-            BsonType currentBsonType = bsonBinaryReader.getCurrentBsonType();
+        bsonReader.readStartArray();
+        while (bsonReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
+            BsonType currentBsonType = bsonReader.getCurrentBsonType();
             if (currentBsonType == BsonType.ARRAY) {
-                Utils.methodInvoke(method, collectionObject, decode(bsonBinaryReader, targetComponentClazz, targetType));
+                Utils.methodInvoke(method, collectionObject, decode(bsonReader, targetComponentClazz, targetType));
             } else {
                 Object javaValue;
                 if (currentBsonType == BsonType.DOCUMENT) {
-                    javaValue = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonBinaryReader, targetComponentClazz);
+                    javaValue = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, targetComponentClazz);
                 } else if (currentBsonType == BsonType.OBJECT_ID) {
-                    ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonBinaryReader);
+                    ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
                     javaValue = Utils.getObjectIdByRealType(targetComponentClazz, objectId);
                 } else {
-                    javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonBinaryReader);
+                    javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
                 }
                 Utils.methodInvoke(method, collectionObject, javaValue);
             }

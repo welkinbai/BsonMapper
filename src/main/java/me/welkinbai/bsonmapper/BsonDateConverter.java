@@ -1,6 +1,6 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonDateConverter implements BsonValueConverter<Date>, BsonBinaryReaderConverter<Date> {
+class BsonDateConverter implements BsonValueConverter<Date>, BsonReaderConverter<Date> {
 
     private BsonDateConverter() {
     }
@@ -23,7 +23,7 @@ class BsonDateConverter implements BsonValueConverter<Date>, BsonBinaryReaderCon
     }
 
     @Override
-    public Date decode(BsonBinaryReader bsonBinaryReader) {
-        return new Date(bsonBinaryReader.readDateTime());
+    public Date decode(BsonReader bsonReader) {
+        return new Date(bsonReader.readDateTime());
     }
 }

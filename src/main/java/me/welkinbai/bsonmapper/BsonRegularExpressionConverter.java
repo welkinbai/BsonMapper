@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonRegularExpression;
 import org.bson.BsonValue;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularExpression>, BsonBinaryReaderConverter<BsonRegularExpression> {
+class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularExpression>, BsonReaderConverter<BsonRegularExpression> {
 
     private BsonRegularExpressionConverter() {
     }
@@ -22,7 +22,7 @@ class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularEx
     }
 
     @Override
-    public BsonRegularExpression decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.readRegularExpression();
+    public BsonRegularExpression decode(BsonReader binaryReader) {
+        return binaryReader.readRegularExpression();
     }
 }

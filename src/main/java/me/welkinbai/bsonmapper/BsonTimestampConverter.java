@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonTimestamp;
 import org.bson.BsonValue;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonTimestampConverter implements BsonValueConverter<BsonTimestamp>, BsonBinaryReaderConverter<BsonTimestamp> {
+class BsonTimestampConverter implements BsonValueConverter<BsonTimestamp>, BsonReaderConverter<BsonTimestamp> {
 
     private BsonTimestampConverter() {
     }
@@ -22,7 +22,7 @@ class BsonTimestampConverter implements BsonValueConverter<BsonTimestamp>, BsonB
     }
 
     @Override
-    public BsonTimestamp decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.readTimestamp();
+    public BsonTimestamp decode(BsonReader binaryReader) {
+        return binaryReader.readTimestamp();
     }
 }

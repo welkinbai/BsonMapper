@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.Code;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeConverter implements BsonValueConverter<Code>, BsonBinaryReaderConverter<Code> {
+class BsonCodeConverter implements BsonValueConverter<Code>, BsonReaderConverter<Code> {
 
     private BsonCodeConverter() {
     }
@@ -22,7 +22,7 @@ class BsonCodeConverter implements BsonValueConverter<Code>, BsonBinaryReaderCon
     }
 
     @Override
-    public Code decode(BsonBinaryReader bsonBinaryReader) {
-        return new Code(bsonBinaryReader.readJavaScript());
+    public Code decode(BsonReader bsonReader) {
+        return new Code(bsonReader.readJavaScript());
     }
 }

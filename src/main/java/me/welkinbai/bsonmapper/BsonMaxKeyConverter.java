@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MaxKey;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey>, BsonBinaryReaderConverter<MaxKey> {
+public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey>, BsonReaderConverter<MaxKey> {
 
     private BsonMaxKeyConverter() {
     }
@@ -22,7 +22,7 @@ public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey>, BsonBina
     }
 
     @Override
-    public MaxKey decode(BsonBinaryReader bsonBinaryReader) {
+    public MaxKey decode(BsonReader bsonBinaryReader) {
         return new MaxKey();
     }
 }

@@ -1,12 +1,12 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonIntegerConverter implements BsonValueConverter<Integer>, BsonBinaryReaderConverter<Integer> {
+class BsonIntegerConverter implements BsonValueConverter<Integer>, BsonReaderConverter<Integer> {
 
     private BsonIntegerConverter() {
     }
@@ -21,7 +21,7 @@ class BsonIntegerConverter implements BsonValueConverter<Integer>, BsonBinaryRea
     }
 
     @Override
-    public Integer decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.readInt32();
+    public Integer decode(BsonReader binaryReader) {
+        return binaryReader.readInt32();
     }
 }

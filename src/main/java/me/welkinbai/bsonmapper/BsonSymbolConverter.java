@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.Symbol;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonSymbolConverter implements BsonValueConverter<Symbol>, BsonBinaryReaderConverter<Symbol> {
+public class BsonSymbolConverter implements BsonValueConverter<Symbol>, BsonReaderConverter<Symbol> {
 
     private BsonSymbolConverter() {
     }
@@ -22,7 +22,7 @@ public class BsonSymbolConverter implements BsonValueConverter<Symbol>, BsonBina
     }
 
     @Override
-    public Symbol decode(BsonBinaryReader bsonBinaryReader) {
-        return new Symbol(bsonBinaryReader.readSymbol());
+    public Symbol decode(BsonReader bsonReader) {
+        return new Symbol(bsonReader.readSymbol());
     }
 }

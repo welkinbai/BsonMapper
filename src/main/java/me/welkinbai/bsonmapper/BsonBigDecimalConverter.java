@@ -1,6 +1,6 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 
 import java.math.BigDecimal;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal>, BsonBinaryReaderConverter<BigDecimal> {
+class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal>, BsonReaderConverter<BigDecimal> {
 
     private BsonBigDecimalConverter() {
     }
@@ -23,7 +23,7 @@ class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal>, BsonBin
     }
 
     @Override
-    public BigDecimal decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.doReadDecimal128().bigDecimalValue();
+    public BigDecimal decode(BsonReader bsonReader) {
+        return bsonReader.readDecimal128().bigDecimalValue();
     }
 }

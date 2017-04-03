@@ -1,13 +1,13 @@
 package me.welkinbai.bsonmapper;
 
-import org.bson.BsonBinaryReader;
 import org.bson.BsonDbPointer;
+import org.bson.BsonReader;
 import org.bson.BsonValue;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer>, BsonBinaryReaderConverter<BsonDbPointer> {
+class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer>, BsonReaderConverter<BsonDbPointer> {
 
     private BsonDbPointerConverter() {
     }
@@ -22,7 +22,7 @@ class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer>, BsonB
     }
 
     @Override
-    public BsonDbPointer decode(BsonBinaryReader bsonBinaryReader) {
-        return bsonBinaryReader.readDBPointer();
+    public BsonDbPointer decode(BsonReader bsonReader) {
+        return bsonReader.readDBPointer();
     }
 }
