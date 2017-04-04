@@ -1,39 +1,88 @@
 package me.welkinbai.bsonmapper;
 
+import org.bson.BsonBinaryReader;
 import org.bson.BsonDocument;
 import org.bson.io.BsonInput;
+import org.bson.io.BsonOutput;
+import org.bson.json.JsonReader;
 
 import java.nio.ByteBuffer;
 
+import static me.welkinbai.bsonmapper.Utils.checkIsSupportClazz;
 import static me.welkinbai.bsonmapper.Utils.checkNotNull;
+import static me.welkinbai.bsonmapper.Utils.isStrEmpty;
 
 /**
  * Created by welkinbai on 2017/3/21.
  */
 public class DefaultBsonMapper implements BsonMapper {
 
+    private static final String NOT_NULL_MSG = "targetClazz should not be Null!";
+    private static final String NOT_SUPPORT_CLAZZ_MSG = "targetClazz should not be a common value Clazz or Collection/Array Clazz.It should be a real Object.clazz name:";
+
+    private DefaultBsonMapper() {
+    }
+
+    public static BsonMapper defaultBsonMapper() {
+        return new DefaultBsonMapper();
+    }
+
     @Override
     public <T> T readFrom(BsonDocument bsonDocument, Class<T> targetClazz) {
-        checkNotNull(targetClazz, "targetClazz should not be Null!");
+        if (bsonDocument == null) {
+            return null;
+        }
+        checkNotNull(targetClazz, NOT_NULL_MSG);
+        checkIsSupportClazz(targetClazz, NOT_SUPPORT_CLAZZ_MSG + targetClazz.getName());
         return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonDocument, targetClazz);
     }
 
     @Override
     public <T> T readFrom(ByteBuffer byteBuffer, Class<T> targetClazz) {
-        checkNotNull(targetClazz, "targetClazz should not be Null!");
-        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(byteBuffer, targetClazz);
+        if (byteBuffer == null) {
+            return null;
+        }
+        checkNotNull(targetClazz, NOT_NULL_MSG);
+        checkIsSupportClazz(targetClazz, NOT_SUPPORT_CLAZZ_MSG + targetClazz.getName());
+        BsonBinaryReader bsonBinaryReader = new BsonBinaryReader(byteBuffer);
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonBinaryReader, targetClazz);
     }
 
     @Override
     public <T> T readFrom(BsonInput bsonInput, Class<T> targetClazz) {
-        checkNotNull(targetClazz, "targetClazz should not be Null!");
-        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonInput, targetClazz);
+        if (bsonInput == null) {
+            return null;
+        }
+        checkNotNull(targetClazz, NOT_NULL_MSG);
+        checkIsSupportClazz(targetClazz, NOT_SUPPORT_CLAZZ_MSG + targetClazz.getName());
+        BsonBinaryReader bsonBinaryReader = new BsonBinaryReader(bsonInput);
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonBinaryReader, targetClazz);
     }
 
     @Override
     public <T> T readFrom(String jsonString, Class<T> targetClazz) {
-        checkNotNull(targetClazz, "targetClazz should not be Null!");
-        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(jsonString, targetClazz);
+        if (isStrEmpty(jsonString)) {
+            return null;
+        }
+        checkNotNull(targetClazz, NOT_NULL_MSG);
+        checkIsSupportClazz(targetClazz, NOT_SUPPORT_CLAZZ_MSG + targetClazz.getName());
+        JsonReader jsonReader = new JsonReader(jsonString);
+        return BsonValueConverterRepertory.getBsonDocumentConverter().decode(jsonReader, targetClazz);
+    }
+
+    @Override
+    public void writeTo(BsonDocument bsonDocument, Object object) {
+
+    }
+
+    @Override
+    public void writeTo(BsonOutput bsonOutput, Object object) {
+
+    }
+
+    @Override
+    public String writeAsJsonStr(Object object) {
+        return null;
     }
 
 }

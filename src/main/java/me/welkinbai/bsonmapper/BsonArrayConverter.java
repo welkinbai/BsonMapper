@@ -147,6 +147,7 @@ class BsonArrayConverter {
                 Utils.methodInvoke(method, collectionObject, javaValue);
             }
         }
+        bsonReader.readEndArray();
         return collectionObject;
     }
 }

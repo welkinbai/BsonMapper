@@ -7,7 +7,7 @@ import org.bson.types.Symbol;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonSymbolConverter implements BsonValueConverter<Symbol>, BsonReaderConverter<Symbol> {
+class BsonSymbolConverter implements BsonValueConverter<Symbol>, BsonReaderConverter<Symbol> {
 
     private BsonSymbolConverter() {
     }

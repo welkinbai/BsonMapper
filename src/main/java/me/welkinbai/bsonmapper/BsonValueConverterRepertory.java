@@ -54,12 +54,12 @@ public class BsonValueConverterRepertory {
         CLASS_BSON_VALUE_CONVERTER_MAP.put(MaxKey.class, BsonMaxKeyConverter.getInstance());
     }
 
-    public static BsonValueConverter getValueConverterByBsonType(BsonType bsonType) {
+    static BsonValueConverter getValueConverterByBsonType(BsonType bsonType) {
         Class<?> clazz = getClazzByBsonType(bsonType);
         return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
     }
 
-    public static BsonReaderConverter getBinaryReaderConverterByBsonType(BsonType bsonType) {
+    static BsonReaderConverter getBinaryReaderConverterByBsonType(BsonType bsonType) {
         Class<?> clazz = getClazzByBsonType(bsonType);
         return (BsonReaderConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
     }
@@ -67,16 +67,16 @@ public class BsonValueConverterRepertory {
     private static Class<?> getClazzByBsonType(BsonType bsonType) {
         Class<?> clazz = BSON_TYPE_CLASS_MAP.get(bsonType);
         if (clazz == null) {
-            throw new BsonMapperConverterException("can find BsonValueConverter for bsonType:" + bsonType);
+            throw new BsonMapperConverterException("can not find BsonValueConverter for bsonType:" + bsonType);
         }
         return clazz;
     }
 
-    public static BsonDocumentConverter getBsonDocumentConverter() {
+    static BsonDocumentConverter getBsonDocumentConverter() {
         return BSON_DOCUMENT_CONVERTER;
     }
 
-    public static BsonArrayConverter getBsonArrayConverter() {
+    static BsonArrayConverter getBsonArrayConverter() {
         return BSON_ARRAY_CONVERTER;
     }
 

@@ -2,6 +2,7 @@ package me.welkinbai.bsonmapper;
 
 import org.bson.BsonDocument;
 import org.bson.io.BsonInput;
+import org.bson.io.BsonOutput;
 
 import java.nio.ByteBuffer;
 
@@ -17,4 +18,10 @@ public interface BsonMapper {
     <T> T readFrom(BsonInput bsonInput, Class<T> targetClazz);
 
     <T> T readFrom(String jsonString, Class<T> targetClazz);
+
+    void writeTo(BsonDocument bsonDocument, Object object);
+
+    void writeTo(BsonOutput bsonOutput, Object object);
+
+    String writeAsJsonStr(Object object);
 }

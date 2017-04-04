@@ -117,4 +117,10 @@ class Utils {
             throw new BsonMapperConverterException("BsonValue ObjectId just can be converted to String or ObjectId.");
         }
     }
+
+    public static void checkIsSupportClazz(Class<?> targetClazz, String message) {
+        if (BsonValueConverterRepertory.isValueSupportClazz(targetClazz)) {
+            throw new BsonMapperConverterException(message);
+        }
+    }
 }
