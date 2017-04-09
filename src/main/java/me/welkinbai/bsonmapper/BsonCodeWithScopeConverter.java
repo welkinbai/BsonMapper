@@ -1,16 +1,19 @@
 package me.welkinbai.bsonmapper;
 
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
+import org.bson.BsonDocument;
 import org.bson.BsonJavaScriptWithScope;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.CodeWithScope;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope>, BsonReaderConverter<CodeWithScope> {
+class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, BsonJavaScriptWithScope>, BsonReaderConverter<CodeWithScope> {
 
     private BsonCodeWithScopeConverter() {
     }
@@ -26,7 +29,14 @@ class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope>, B
     }
 
     @Override
+    public BsonJavaScriptWithScope encode(Field field, Object object) {
+        CodeWithScope value = (CodeWithScope) Utils.getFieldValue(field, object);
+        return new BsonJavaScriptWithScope(value.getCode(), BsonDocument.parse(value.getScope().toJson()));
+    }
+
+    @Override
     public CodeWithScope decode(BsonReader bsonReader) {
         throw new BsonMapperConverterException("could not convert to CodeWithScope when use BsonBinaryReader.BsonBinaryReader haven't gave us scope.");
     }
+
 }

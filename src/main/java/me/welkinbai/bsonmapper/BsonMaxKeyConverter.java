@@ -4,10 +4,12 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MaxKey;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey>, BsonReaderConverter<MaxKey> {
+public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, MaxKey>, BsonReaderConverter<MaxKey> {
 
     private BsonMaxKeyConverter() {
     }
@@ -19,6 +21,11 @@ public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey>, BsonRead
     @Override
     public MaxKey decode(BsonValue bsonValue) {
         return new MaxKey();
+    }
+
+    @Override
+    public MaxKey encode(Field field, Object object) {
+        return (MaxKey) Utils.getFieldValue(field, object);
     }
 
     @Override

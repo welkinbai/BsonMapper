@@ -59,6 +59,10 @@ public class BsonValueConverterRepertory {
         return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
     }
 
+    static BsonValueConverter getValueConverterByClazz(Class<?> clazz){
+        return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+    }
+
     static BsonReaderConverter getBinaryReaderConverterByBsonType(BsonType bsonType) {
         Class<?> clazz = getClazzByBsonType(bsonType);
         return (BsonReaderConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);

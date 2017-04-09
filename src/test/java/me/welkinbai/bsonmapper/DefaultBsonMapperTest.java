@@ -38,7 +38,7 @@ public class DefaultBsonMapperTest {
         System.out.println(Arrays.toString(bsonTest.getTestBinary().getData()));
         System.out.println(bsonTest.getTestObjectId());
         System.out.println(bsonTest.getTestStringObjectId());
-        System.out.println(bsonTest.isTestBooean());
+        System.out.println(bsonTest.isTestBoolean());
         System.out.println(bsonTest.getTestDate());
         System.out.println(bsonTest.getTestNull());
         System.out.println(bsonTest.getTestInt());

@@ -2,6 +2,7 @@ package me.welkinbai.bsonmapper;
 
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonDocument;
+import org.bson.BsonNull;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
@@ -13,6 +14,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import static me.welkinbai.bsonmapper.Utils.getBsonName;
 import static me.welkinbai.bsonmapper.Utils.getObjectIdByRealType;
@@ -70,12 +72,7 @@ class BsonDocumentConverter {
 
     <T> T decode(BsonReader bsonReader, Class<T> targetClazz) {
         bsonReader.readStartDocument();
-        List<Field> allField = Utils.getAllField(targetClazz);
-        Map<String, Field> bsonNameFieldInfoMap = new HashMap<String, Field>();
-        for (Field field : allField) {
-            String bsonName = Utils.getBsonName(field);
-            bsonNameFieldInfoMap.put(bsonName, field);
-        }
+        Map<String, Field> bsonNameFieldInfoMap = getBsonNameFieldInfoMap(targetClazz);
         T target = Utils.newInstanceByClazz(targetClazz);
         while (bsonReader.readBsonType() != BsonType.END_OF_DOCUMENT) {
             String bsonName = bsonReader.readName();
@@ -94,6 +91,16 @@ class BsonDocumentConverter {
         }
         bsonReader.readEndDocument();
         return target;
+    }
+
+    private <T> Map<String, Field> getBsonNameFieldInfoMap(Class<T> targetClazz) {
+        List<Field> allField = Utils.getAllField(targetClazz);
+        Map<String, Field> bsonNameFieldInfoMap = new HashMap<String, Field>();
+        for (Field field : allField) {
+            String bsonName = Utils.getBsonName(field);
+            bsonNameFieldInfoMap.put(bsonName, field);
+        }
+        return bsonNameFieldInfoMap;
     }
 
     private <T> void setBySetter(Method setter, T target, Object javaValue) {
@@ -127,6 +134,24 @@ class BsonDocumentConverter {
             return getObjectIdByRealType(field.getType(), objectId);
         }
         return BsonValueConverterRepertory.getValueConverterByBsonType(bsonValue.getBsonType()).decode(bsonValue);
+    }
+
+    public void encode(BsonDocument bsonDocument, Object object) {
+        Map<String, Field> bsonNameFieldInfoMap = getBsonNameFieldInfoMap(object.getClass());
+        for (Entry<String, Field> entry : bsonNameFieldInfoMap.entrySet()) {
+            String bsonName = entry.getKey();
+            Field field = entry.getValue();
+            Class<?> fieldType = field.getType();
+            if (Utils.fieldIsObjectId(field)) {
+                fieldType = ObjectId.class;
+            }
+            BsonValueConverter valueConverter = BsonValueConverterRepertory.getValueConverterByClazz(fieldType);
+            if (valueConverter != null) {
+                bsonDocument.put(bsonName, valueConverter.encode(field, object));
+            } else {
+                bsonDocument.put(bsonName, new BsonNull());
+            }
+        }
     }
 
 }

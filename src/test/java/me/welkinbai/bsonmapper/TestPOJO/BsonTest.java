@@ -23,7 +23,7 @@ public class BsonTest {
     private ObjectId testObjectId;
     @BsonField(IsObjectId = true)
     private String testStringObjectId;
-    private boolean testBooean;
+    private boolean testBoolean;
     private Date testDate;
     private BsonTest testNull;
     private Integer testInt;
@@ -57,8 +57,8 @@ public class BsonTest {
         return testStringObjectId;
     }
 
-    public boolean isTestBooean() {
-        return testBooean;
+    public boolean isTestBoolean() {
+        return testBoolean;
     }
 
     public Date getTestDate() {
@@ -92,7 +92,7 @@ public class BsonTest {
         sb.append(", bsonTest=").append(bsonTest);
         sb.append(", testObjectId=").append(testObjectId);
         sb.append(", testStringObjectId='").append(testStringObjectId).append('\'');
-        sb.append(", testBooean=").append(testBooean);
+        sb.append(", testBoolean=").append(testBoolean);
         sb.append(", testDate=").append(testDate);
         sb.append(", testNull=").append(testNull);
         sb.append(", testInt=").append(testInt);

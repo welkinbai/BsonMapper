@@ -20,12 +20,17 @@ import java.util.Set;
  */
 class Utils {
     private static final String SETTER_PREFIX = "set";
+    private static final String GETTER_PREFIX = "get";
 
     private Utils() {
     }
 
     public static String makeSetterName(String name) {
         return SETTER_PREFIX + name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
+    public static String makeGetterName(String name) {
+        return GETTER_PREFIX + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public static void checkNotNull(Object object, String message) {
@@ -122,5 +127,30 @@ class Utils {
         if (BsonValueConverterRepertory.isValueSupportClazz(targetClazz)) {
             throw new BsonMapperConverterException(message);
         }
+    }
+
+    public static Object getFieldValue(Field field, Object object) {
+        Class<?> clazz = object.getClass();
+        Object value;
+        String getterName = null;
+        try {
+            getterName = Utils.makeGetterName(field.getName());
+            Method getter = clazz.getDeclaredMethod(getterName);
+            value = getter.invoke(object);
+        } catch (NoSuchMethodException e) {
+            if (Modifier.isPrivate(field.getModifiers())) {
+                field.setAccessible(true);
+            }
+            try {
+                value = field.get(object);
+            } catch (IllegalAccessException e1) {
+                throw new BsonMapperConverterException("IllegalAccessException. field name:" + field.getName(), e);
+            }
+        } catch (InvocationTargetException e) {
+            throw new BsonMapperConverterException("InvocationTargetException. getterName:" + getterName, e);
+        } catch (IllegalAccessException e) {
+            throw new BsonMapperConverterException("IllegalAccessException. getterName:" + getterName, e);
+        }
+        return value;
     }
 }

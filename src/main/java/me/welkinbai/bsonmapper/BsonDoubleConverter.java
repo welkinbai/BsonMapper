@@ -1,12 +1,15 @@
 package me.welkinbai.bsonmapper;
 
+import org.bson.BsonDouble;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by welkinbai on 2017/3/23.
  */
-class BsonDoubleConverter implements BsonValueConverter<Double>, BsonReaderConverter<Double> {
+class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, BsonReaderConverter<Double> {
 
     private BsonDoubleConverter() {
     }
@@ -18,6 +21,11 @@ class BsonDoubleConverter implements BsonValueConverter<Double>, BsonReaderConve
     @Override
     public Double decode(BsonValue bsonValue) {
         return bsonValue.asDouble().getValue();
+    }
+
+    @Override
+    public BsonDouble encode(Field field, Object object) {
+        return new BsonDouble((Double) Utils.getFieldValue(field, object));
     }
 
     @Override

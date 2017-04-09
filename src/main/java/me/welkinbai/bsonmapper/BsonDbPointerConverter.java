@@ -4,10 +4,12 @@ import org.bson.BsonDbPointer;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer>, BsonReaderConverter<BsonDbPointer> {
+class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer, BsonDbPointer>, BsonReaderConverter<BsonDbPointer> {
 
     private BsonDbPointerConverter() {
     }
@@ -19,6 +21,11 @@ class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer>, BsonR
     @Override
     public BsonDbPointer decode(BsonValue bsonValue) {
         return bsonValue.asDBPointer();
+    }
+
+    @Override
+    public BsonDbPointer encode(Field field, Object object) {
+        return (BsonDbPointer) Utils.getFieldValue(field, object);
     }
 
     @Override

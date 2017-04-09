@@ -72,7 +72,10 @@ public class DefaultBsonMapper implements BsonMapper {
 
     @Override
     public void writeTo(BsonDocument bsonDocument, Object object) {
-
+        if (bsonDocument == null || object == null) {
+            return;
+        }
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object);
     }
 
     @Override
