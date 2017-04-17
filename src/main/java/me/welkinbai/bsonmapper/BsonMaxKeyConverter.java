@@ -1,5 +1,6 @@
 package me.welkinbai.bsonmapper;
 
+import org.bson.BsonMaxKey;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MaxKey;
@@ -9,7 +10,7 @@ import java.lang.reflect.Field;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, MaxKey>, BsonReaderConverter<MaxKey> {
+public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, BsonMaxKey>, BsonReaderConverter<MaxKey> {
 
     private BsonMaxKeyConverter() {
     }
@@ -24,8 +25,8 @@ public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, MaxKey>, 
     }
 
     @Override
-    public MaxKey encode(Field field, Object object) {
-        return (MaxKey) Utils.getFieldValue(field, object);
+    public BsonMaxKey encode(Field field, Object object) {
+        return new BsonMaxKey();
     }
 
     @Override

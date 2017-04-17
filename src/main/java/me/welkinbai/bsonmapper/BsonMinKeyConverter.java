@@ -1,5 +1,6 @@
 package me.welkinbai.bsonmapper;
 
+import org.bson.BsonMinKey;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MinKey;
@@ -9,7 +10,7 @@ import java.lang.reflect.Field;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonMinKeyConverter implements BsonValueConverter<MinKey, MinKey>, BsonReaderConverter<MinKey> {
+public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKey>, BsonReaderConverter<MinKey> {
 
     private BsonMinKeyConverter() {
     }
@@ -24,8 +25,8 @@ public class BsonMinKeyConverter implements BsonValueConverter<MinKey, MinKey>, 
     }
 
     @Override
-    public MinKey encode(Field field, Object object) {
-        return (MinKey) Utils.getFieldValue(field, object);
+    public BsonMinKey encode(Field field, Object object) {
+        return new BsonMinKey();
     }
 
     @Override
