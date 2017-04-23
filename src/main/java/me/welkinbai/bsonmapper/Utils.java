@@ -1,5 +1,6 @@
 package me.welkinbai.bsonmapper;
 
+import me.welkinbai.bsonmapper.annotations.BsonArrayField;
 import me.welkinbai.bsonmapper.annotations.BsonField;
 import me.welkinbai.bsonmapper.annotations.BsonIgnore;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
@@ -11,6 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -152,5 +154,17 @@ class Utils {
             throw new BsonMapperConverterException("IllegalAccessException. getterName:" + getterName, e);
         }
         return value;
+    }
+
+    public static boolean isArrayField(Class<?> fieldType) {
+        return fieldType.isArray() || Collection.class.isAssignableFrom(fieldType);
+    }
+
+    public static BsonArrayField getBsonArrayFieldAnnotation(Field field) {
+        BsonArrayField bsonArrayField = field.getAnnotation(BsonArrayField.class);
+        if (bsonArrayField == null) {
+            throw new BsonMapperConverterException(String.format("field %s need @BsonArrayField for Collection field.If you don't want to decode the field, add @BsonIgnore for it.", field.getName()));
+        }
+        return bsonArrayField;
     }
 }

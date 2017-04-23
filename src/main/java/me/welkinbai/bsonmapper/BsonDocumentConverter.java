@@ -142,12 +142,16 @@ class BsonDocumentConverter {
             String bsonName = entry.getKey();
             Field field = entry.getValue();
             Class<?> fieldType = field.getType();
+            if (Utils.isArrayField(fieldType)) {
+                BsonValueConverterRepertory.getBsonArrayConverter().encode(bsonDocument, field, Utils.getFieldValue(field, object));
+                continue;
+            }
             if (Utils.fieldIsObjectId(field)) {
                 fieldType = ObjectId.class;
             }
             BsonValueConverter valueConverter = BsonValueConverterRepertory.getValueConverterByClazz(fieldType);
             if (valueConverter != null) {
-                bsonDocument.put(bsonName, valueConverter.encode(field, object));
+                bsonDocument.put(bsonName, valueConverter.encode(Utils.getFieldValue(field, object)));
             } else {
                 bsonDocument.put(bsonName, new BsonNull());
             }

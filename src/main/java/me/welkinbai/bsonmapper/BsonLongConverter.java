@@ -4,8 +4,6 @@ import org.bson.BsonInt64;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -24,8 +22,8 @@ public class BsonLongConverter implements BsonValueConverter<Long, BsonInt64>, B
     }
 
     @Override
-    public BsonInt64 encode(Field field, Object object) {
-        return new BsonInt64((Long) Utils.getFieldValue(field, object));
+    public BsonInt64 encode(Object object) {
+        return new BsonInt64((Long) object);
     }
 
     @Override

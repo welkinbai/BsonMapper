@@ -8,8 +8,6 @@ import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.CodeWithScope;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -29,8 +27,8 @@ class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, Bs
     }
 
     @Override
-    public BsonJavaScriptWithScope encode(Field field, Object object) {
-        CodeWithScope value = (CodeWithScope) Utils.getFieldValue(field, object);
+    public BsonJavaScriptWithScope encode(Object object) {
+        CodeWithScope value = (CodeWithScope) object;
         return new BsonJavaScriptWithScope(value.getCode(), BsonDocument.parse(value.getScope().toJson()));
     }
 

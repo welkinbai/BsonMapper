@@ -4,8 +4,6 @@ import org.bson.BsonInt32;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -24,8 +22,8 @@ class BsonIntegerConverter implements BsonValueConverter<Integer, BsonInt32>, Bs
     }
 
     @Override
-    public BsonInt32 encode(Field field, Object object) {
-        return new BsonInt32((Integer) Utils.getFieldValue(field, object));
+    public BsonInt32 encode(Object object) {
+        return new BsonInt32((Integer) object);
     }
 
     @Override

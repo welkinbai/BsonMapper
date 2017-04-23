@@ -5,7 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.Decimal128;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 /**
@@ -26,8 +25,8 @@ class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal, BsonDeci
     }
 
     @Override
-    public BsonDecimal128 encode(Field field, Object object) {
-        return new BsonDecimal128(new Decimal128((BigDecimal) Utils.getFieldValue(field, object)));
+    public BsonDecimal128 encode(Object object) {
+        return new BsonDecimal128(new Decimal128((BigDecimal) object));
     }
 
     @Override

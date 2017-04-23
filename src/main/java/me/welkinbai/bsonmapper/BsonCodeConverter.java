@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.Code;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,8 +23,8 @@ class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, Bso
     }
 
     @Override
-    public BsonJavaScript encode(Field field, Object object) {
-        return new BsonJavaScript(((Code) Utils.getFieldValue(field, object)).getCode());
+    public BsonJavaScript encode(Object object) {
+        return new BsonJavaScript(((Code) object).getCode());
     }
 
     @Override

@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonUndefined;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,7 +23,7 @@ class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined, BsonUn
     }
 
     @Override
-    public BsonUndefined encode(Field field, Object object) {
+    public BsonUndefined encode(Object object) {
         throw new BsonMapperConverterException("BsonUndefined type is not support");
     }
 

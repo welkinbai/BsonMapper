@@ -4,8 +4,6 @@ import org.bson.BsonReader;
 import org.bson.BsonTimestamp;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -24,8 +22,8 @@ class BsonTimestampConverter implements BsonValueConverter<BsonTimestamp, BsonTi
     }
 
     @Override
-    public BsonTimestamp encode(Field field, Object object) {
-        return (BsonTimestamp) Utils.getFieldValue(field, object);
+    public BsonTimestamp encode(Object object) {
+        return (BsonTimestamp) object;
     }
 
     @Override

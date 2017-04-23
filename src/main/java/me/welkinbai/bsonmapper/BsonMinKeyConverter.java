@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MinKey;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,7 +23,7 @@ public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKe
     }
 
     @Override
-    public BsonMinKey encode(Field field, Object object) {
+    public BsonMinKey encode(Object object) {
         return new BsonMinKey();
     }
 

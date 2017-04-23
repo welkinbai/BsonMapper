@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.ObjectId;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,12 +23,12 @@ class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId
     }
 
     @Override
-    public BsonObjectId encode(Field field, Object object) {
-        Class<?> fieldType = field.getType();
+    public BsonObjectId encode(Object object) {
+        Class<?> fieldType = object.getClass();
         if (fieldType == String.class) {
-            return new BsonObjectId(new ObjectId((String) Utils.getFieldValue(field, object)));
+            return new BsonObjectId(new ObjectId((String) object));
         }
-        return new BsonObjectId((ObjectId) Utils.getFieldValue(field, object));
+        return new BsonObjectId((ObjectId) object);
     }
 
     @Override

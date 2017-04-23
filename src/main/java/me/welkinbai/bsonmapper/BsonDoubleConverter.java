@@ -4,8 +4,6 @@ import org.bson.BsonDouble;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/23.
  */
@@ -24,8 +22,8 @@ class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, Bso
     }
 
     @Override
-    public BsonDouble encode(Field field, Object object) {
-        return new BsonDouble((Double) Utils.getFieldValue(field, object));
+    public BsonDouble encode(Object object) {
+        return new BsonDouble((Double) object);
     }
 
     @Override

@@ -4,10 +4,6 @@ import org.bson.BsonReader;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
-
-import static me.welkinbai.bsonmapper.Utils.getFieldValue;
-
 /**
  * Created by welkinbai on 2017/3/23.
  */
@@ -26,9 +22,8 @@ class BsonStringConverter implements BsonValueConverter<String, BsonString>, Bso
     }
 
     @Override
-    public BsonString encode(Field field, Object object) {
-        Object value = getFieldValue(field, object);
-        return new BsonString((String) value);
+    public BsonString encode(Object object) {
+        return new BsonString((String) object);
     }
 
     @Override

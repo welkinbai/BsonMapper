@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.Binary;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -26,8 +24,8 @@ class BsonBinaryConverter implements BsonValueConverter<Binary, BsonBinary>, Bso
     }
 
     @Override
-    public BsonBinary encode(Field field, Object object) {
-        Binary value = (Binary) Utils.getFieldValue(field, object);
+    public BsonBinary encode(Object object) {
+        Binary value = ((Binary) object);
         return new BsonBinary(value.getType(), value.getData());
     }
 

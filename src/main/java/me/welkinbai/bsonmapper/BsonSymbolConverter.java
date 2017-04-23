@@ -5,8 +5,6 @@ import org.bson.BsonSymbol;
 import org.bson.BsonValue;
 import org.bson.types.Symbol;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,8 +23,8 @@ class BsonSymbolConverter implements BsonValueConverter<Symbol, BsonSymbol>, Bso
     }
 
     @Override
-    public BsonSymbol encode(Field field, Object object) {
-        return new BsonSymbol(((Symbol) Utils.getFieldValue(field, object)).getSymbol());
+    public BsonSymbol encode(Object object) {
+        return new BsonSymbol(((Symbol) object).getSymbol());
     }
 
     @Override

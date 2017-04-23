@@ -4,7 +4,6 @@ import org.bson.BsonDateTime;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -25,8 +24,8 @@ class BsonDateConverter implements BsonValueConverter<Date, BsonDateTime>, BsonR
     }
 
     @Override
-    public BsonDateTime encode(Field field, Object object) {
-        return new BsonDateTime(((Date) Utils.getFieldValue(field, object)).getTime());
+    public BsonDateTime encode(Object object) {
+        return new BsonDateTime(((Date) object).getTime());
     }
 
     @Override

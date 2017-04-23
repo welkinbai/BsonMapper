@@ -3,6 +3,7 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.annotations.BsonArrayField;
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonArray;
+import org.bson.BsonDocument;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
@@ -13,6 +14,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by welkinbai on 2017/3/23.
@@ -35,10 +38,7 @@ class BsonArrayConverter {
             if (Utils.isUnableAddCollectionClazz(implClass)) {
                 return null;
             }
-            BsonArrayField bsonArrayField = field.getAnnotation(BsonArrayField.class);
-            if (bsonArrayField == null) {
-                throw new BsonMapperConverterException(String.format("field %s need @BsonArrayField for Collection field.If you don't want to decode the field, add @BsonIgnore for it.", field.getName()));
-            }
+            BsonArrayField bsonArrayField = Utils.getBsonArrayFieldAnnotation(field);
             return decode(bsonArray, bsonArrayField.componentType(), implClass);
         } else {
             throw new BsonMapperConverterException(String.format("field %s should be array or Collection because there is a BsonArray in BsonDocument,BsonName is %s", field.getName(), Utils.getBsonName(field)));
@@ -54,15 +54,13 @@ class BsonArrayConverter {
             if (Utils.isUnableAddCollectionClazz(implClass)) {
                 return null;
             }
-            BsonArrayField bsonArrayField = field.getAnnotation(BsonArrayField.class);
-            if (bsonArrayField == null) {
-                throw new BsonMapperConverterException(String.format("field %s need @BsonArrayField for Collection field.If you don't want to decode the field, add @BsonIgnore for it.", field.getName()));
-            }
+            BsonArrayField bsonArrayField = Utils.getBsonArrayFieldAnnotation(field);
             return decode(bsonReader, bsonArrayField.componentType(), implClass);
         } else {
             throw new BsonMapperConverterException(String.format("field %s should be array or Collection because there is a BsonArray in BsonDocument,BsonName is %s", field.getName(), Utils.getBsonName(field)));
         }
     }
+
 
     private Object handleArray(BsonReader bsonReader, Class<?> fieldType) {
         ArrayList<Object> arrayList = new ArrayList<Object>();
@@ -149,5 +147,36 @@ class BsonArrayConverter {
         }
         bsonReader.readEndArray();
         return collectionObject;
+    }
+
+    public void encode(BsonDocument bsonDocument, Field field, Object fieldValue) {
+        Class<?> fieldType = field.getType();
+        String bsonName = Utils.getBsonName(field);
+        ArrayList<BsonValue> arrayList = new ArrayList<BsonValue>();
+        if (fieldType.isArray()) {
+            Class<?> componentType = fieldType.getComponentType();
+            Object[] arrayValue = (Object[]) fieldValue;
+            for (Object o : arrayValue) {
+                if (componentType.isInstance(o)) {
+                    arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(field));
+                }
+            }
+        } else if (Collection.class.isAssignableFrom(fieldType)) {
+            BsonArrayField fieldAnnotation = Utils.getBsonArrayFieldAnnotation(field);
+            Class<?> componentType = fieldAnnotation.componentType();
+            if (Set.class.isAssignableFrom(fieldType) || List.class.isAssignableFrom(fieldType)) {
+                Collection fieldSet = (Collection) fieldValue;
+                for (Object o : fieldSet) {
+                    if (componentType.isInstance(o)) {
+                        arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(field));
+                    }
+                }
+            } else {
+                return;
+            }
+        } else {
+            throw new BsonMapperConverterException("exception should be never happen.the field:" + bsonName + "should be array or Collection");
+        }
+        bsonDocument.put(bsonName, new BsonArray(arrayList));
     }
 }

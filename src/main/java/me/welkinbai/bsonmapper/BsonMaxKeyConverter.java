@@ -5,8 +5,6 @@ import org.bson.BsonReader;
 import org.bson.BsonValue;
 import org.bson.types.MaxKey;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by welkinbai on 2017/3/25.
  */
@@ -25,7 +23,7 @@ public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, BsonMaxKe
     }
 
     @Override
-    public BsonMaxKey encode(Field field, Object object) {
+    public BsonMaxKey encode(Object object) {
         return new BsonMaxKey();
     }
 
