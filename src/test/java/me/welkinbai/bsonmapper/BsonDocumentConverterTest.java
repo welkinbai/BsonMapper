@@ -3,6 +3,7 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.TestPOJO.BsonTest;
 import org.bson.BsonArray;
 import org.bson.BsonBinary;
+import org.bson.BsonBinarySubType;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
@@ -13,6 +14,7 @@ import org.bson.BsonNull;
 import org.bson.BsonObjectId;
 import org.bson.BsonString;
 import org.bson.BsonUndefined;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 
@@ -50,7 +52,7 @@ public class BsonDocumentConverterTest {
                 .append("testBsonUndefined", new BsonUndefined())
                 .append("testObjectId", new BsonObjectId())
                 .append("testStringObjectId", new BsonObjectId())
-                .append("testBooean", new BsonBoolean(true))
+                .append("testBoolean", new BsonBoolean(true))
                 .append("testDate", new BsonDateTime(new Date().getTime()))
                 .append("testNull", new BsonNull())
                 .append("testInt", new BsonInt32(233))
@@ -68,6 +70,41 @@ public class BsonDocumentConverterTest {
         System.out.println(bsonTest.getTestInt());
         System.out.println(bsonTest.getTestLong());
         System.out.println(bsonTest);
+    }
+
+    @Test
+    public void testEncode() throws Exception {
+        BsonDocument bsonDocument = new BsonDocument();
+        BsonTest object = getObject();
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object);
+        System.out.println(bsonDocument.toJson());
+        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonDocument, BsonTest.class);
+        System.out.println(bsonTest);
+    }
+
+    private BsonTest getObject() {
+        BsonTest bsonTest = new BsonTest();
+        bsonTest.setTestDouble(20.00);
+        bsonTest.setTestString("测试一下");
+        byte[] bytes = new byte[3];
+        bytes[0] = 3;
+        bytes[1] = 4;
+        bytes[2] = 1;
+        bsonTest.setTestBinary(new Binary(BsonBinarySubType.USER_DEFINED, bytes));
+        ArrayList<BsonTest> testArray = new ArrayList<BsonTest>();
+        BsonTest test1 = new BsonTest();
+        test1.setTestDouble(30.00);
+        testArray.add(test1);
+        bsonTest.setTestArray(testArray);
+        bsonTest.setBsonTest(test1);
+        bsonTest.setTestObjectId(new ObjectId());
+        bsonTest.setTestStringObjectId("59074307568fad36808ff0c5");
+        bsonTest.setTestBoolean(true);
+        bsonTest.setTestDate(new Date());
+        bsonTest.setTestNull(null);
+        bsonTest.setTestInt(2333);
+        bsonTest.setTestLong(2222L);
+        return bsonTest;
     }
 
     @Test

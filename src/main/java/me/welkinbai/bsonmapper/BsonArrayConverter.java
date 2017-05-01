@@ -158,7 +158,13 @@ class BsonArrayConverter {
             Object[] arrayValue = (Object[]) fieldValue;
             for (Object o : arrayValue) {
                 if (componentType.isInstance(o)) {
-                    arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(field));
+                    if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
+                        arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(o));
+                    } else {
+                        BsonDocument arrayEle = new BsonDocument();
+                        BsonValueConverterRepertory.getBsonDocumentConverter().encode(arrayEle, o);
+                        arrayList.add(arrayEle);
+                    }
                 }
             }
         } else if (Collection.class.isAssignableFrom(fieldType)) {
@@ -168,7 +174,13 @@ class BsonArrayConverter {
                 Collection fieldSet = (Collection) fieldValue;
                 for (Object o : fieldSet) {
                     if (componentType.isInstance(o)) {
-                        arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(field));
+                        if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
+                            arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(o));
+                        } else {
+                            BsonDocument arrayEle = new BsonDocument();
+                            BsonValueConverterRepertory.getBsonDocumentConverter().encode(arrayEle, o);
+                            arrayList.add(arrayEle);
+                        }
                     }
                 }
             } else {

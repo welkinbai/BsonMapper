@@ -12,10 +12,9 @@ import java.util.List;
  * Created by welkinbai on 2017/3/23.
  */
 public class BsonTest {
-    private Double testDouble;
+    private double testDouble;
     private String testString;
     private Binary testBinary;
-    //    private BsonUndefined testBsonUndefined;
     @BsonArrayField(componentType = BsonTest.class)
     private List<BsonTest> testArray;
     @BsonField(value = "bson_test")
@@ -23,11 +22,12 @@ public class BsonTest {
     private ObjectId testObjectId;
     @BsonField(IsObjectId = true)
     private String testStringObjectId;
+    //    @BsonIgnore
     private boolean testBoolean;
     private Date testDate;
     private BsonTest testNull;
-    private Integer testInt;
-    private Long testLong;
+    private int testInt;
+    private long testLong;
 
     public Double getTestDouble() {
         return testDouble;
@@ -69,17 +69,60 @@ public class BsonTest {
         return testNull;
     }
 
-    //    public BsonUndefined getTestBsonUndefined() {
-//        return testBsonUndefined;
-//    }
-
-
     public Integer getTestInt() {
         return testInt;
     }
 
     public Long getTestLong() {
         return testLong;
+    }
+
+    public void setTestDouble(Double testDouble) {
+        this.testDouble = testDouble;
+    }
+
+    public void setTestString(String testString) {
+        this.testString = testString;
+    }
+
+    public void setTestBinary(Binary testBinary) {
+        this.testBinary = testBinary;
+    }
+
+    public void setTestArray(List<BsonTest> testArray) {
+        this.testArray = testArray;
+    }
+
+    public void setBsonTest(BsonTest bsonTest) {
+        this.bsonTest = bsonTest;
+    }
+
+    public void setTestObjectId(ObjectId testObjectId) {
+        this.testObjectId = testObjectId;
+    }
+
+    public void setTestStringObjectId(String testStringObjectId) {
+        this.testStringObjectId = testStringObjectId;
+    }
+
+    public void setTestBoolean(boolean testBoolean) {
+        this.testBoolean = testBoolean;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
+    }
+
+    public void setTestNull(BsonTest testNull) {
+        this.testNull = testNull;
+    }
+
+    public void setTestInt(Integer testInt) {
+        this.testInt = testInt;
+    }
+
+    public void setTestLong(Long testLong) {
+        this.testLong = testLong;
     }
 
     @Override

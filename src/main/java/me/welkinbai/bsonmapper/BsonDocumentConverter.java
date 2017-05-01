@@ -2,7 +2,6 @@ package me.welkinbai.bsonmapper;
 
 import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonDocument;
-import org.bson.BsonNull;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
@@ -142,19 +141,29 @@ class BsonDocumentConverter {
             String bsonName = entry.getKey();
             Field field = entry.getValue();
             Class<?> fieldType = field.getType();
+            Object fieldValue = Utils.getFieldValue(field, object);
+            if (fieldValue == null || Utils.isIgnored(field)) {
+                continue;
+            }
             if (Utils.isArrayField(fieldType)) {
-                BsonValueConverterRepertory.getBsonArrayConverter().encode(bsonDocument, field, Utils.getFieldValue(field, object));
+                BsonValueConverterRepertory.getBsonArrayConverter().encode(bsonDocument, field, fieldValue);
                 continue;
             }
             if (Utils.fieldIsObjectId(field)) {
                 fieldType = ObjectId.class;
             }
-            BsonValueConverter valueConverter = BsonValueConverterRepertory.getValueConverterByClazz(fieldType);
-            if (valueConverter != null) {
-                bsonDocument.put(bsonName, valueConverter.encode(Utils.getFieldValue(field, object)));
-            } else {
-                bsonDocument.put(bsonName, new BsonNull());
+            if (BsonValueConverterRepertory.isCanConverterValueType(fieldType)) {
+                BsonValueConverter valueConverter = BsonValueConverterRepertory.getValueConverterByClazz(fieldType);
+                if (valueConverter != null) {
+                    bsonDocument.put(bsonName, valueConverter.encode(fieldValue));
+                } else {
+                    //              maybe log warn message to remind user add converter
+                }
+                continue;
             }
+            BsonDocument valueDocument = new BsonDocument();
+            BsonValueConverterRepertory.getBsonDocumentConverter().encode(valueDocument, fieldValue);
+            bsonDocument.put(bsonName, valueDocument);
         }
     }
 
