@@ -8,7 +8,9 @@ import org.bson.io.BasicOutputBuffer;
 import org.bson.io.BsonInput;
 import org.bson.io.BsonOutput;
 import org.bson.json.JsonReader;
+import org.bson.json.JsonWriter;
 
+import java.io.StringWriter;
 import java.nio.ByteBuffer;
 
 import static me.welkinbai.bsonmapper.Utils.checkIsSupportClazz;
@@ -96,7 +98,13 @@ public class DefaultBsonMapper implements BsonMapper {
 
     @Override
     public String writeAsJsonStr(Object object) {
-        return null;
+        if (object == null) {
+            return null;
+        }
+        StringWriter writer = new StringWriter();
+        BsonWriter bsonWriter = new JsonWriter(writer);
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, object);
+        return writer.toString();
     }
 
 }

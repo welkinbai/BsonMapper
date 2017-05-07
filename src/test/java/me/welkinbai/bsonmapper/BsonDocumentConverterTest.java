@@ -20,10 +20,12 @@ import org.bson.BsonUndefined;
 import org.bson.BsonWriter;
 import org.bson.io.BasicOutputBuffer;
 import org.bson.io.ByteBufferBsonInput;
+import org.bson.json.JsonWriter;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -96,6 +98,14 @@ public class BsonDocumentConverterTest {
         BsonReader bsonReader = new BsonBinaryReader(new ByteBufferBsonInput(bsonOutput.getByteBuffers().get(0)));
         BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, BsonTest.class);
         System.out.println(bsonTest);
+    }
+
+    @Test
+    public void testJsonEncode() throws Exception {
+        StringWriter writer = new StringWriter();
+        BsonWriter bsonWriter = new JsonWriter(writer);
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, getObject());
+        System.out.println(writer.toString());
     }
 
     private BsonTest getObject() {
