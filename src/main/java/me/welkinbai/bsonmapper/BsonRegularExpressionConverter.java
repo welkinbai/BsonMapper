@@ -3,11 +3,12 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonReader;
 import org.bson.BsonRegularExpression;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularExpression, BsonRegularExpression>, BsonReaderConverter<BsonRegularExpression> {
+class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularExpression, BsonRegularExpression>, BsonByteIOConverter<BsonRegularExpression> {
 
     private BsonRegularExpressionConverter() {
     }
@@ -27,7 +28,12 @@ class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularEx
     }
 
     @Override
-    public BsonRegularExpression decode(BsonReader binaryReader) {
-        return binaryReader.readRegularExpression();
+    public BsonRegularExpression decode(BsonReader bsonReader) {
+        return bsonReader.readRegularExpression();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, BsonRegularExpression value) {
+        bsonWriter.writeRegularExpression(value);
     }
 }

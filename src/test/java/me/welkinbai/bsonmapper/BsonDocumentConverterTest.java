@@ -3,7 +3,9 @@ package me.welkinbai.bsonmapper;
 import me.welkinbai.bsonmapper.TestPOJO.BsonTest;
 import org.bson.BsonArray;
 import org.bson.BsonBinary;
+import org.bson.BsonBinaryReader;
 import org.bson.BsonBinarySubType;
+import org.bson.BsonBinaryWriter;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
@@ -12,8 +14,12 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonNull;
 import org.bson.BsonObjectId;
+import org.bson.BsonReader;
 import org.bson.BsonString;
 import org.bson.BsonUndefined;
+import org.bson.BsonWriter;
+import org.bson.io.BasicOutputBuffer;
+import org.bson.io.ByteBufferBsonInput;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -82,6 +88,16 @@ public class BsonDocumentConverterTest {
         System.out.println(bsonTest);
     }
 
+    @Test
+    public void testByteIOEncode() throws Exception {
+        BasicOutputBuffer bsonOutput = new BasicOutputBuffer();
+        BsonWriter bsonWriter = new BsonBinaryWriter(bsonOutput);
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, getObject());
+        BsonReader bsonReader = new BsonBinaryReader(new ByteBufferBsonInput(bsonOutput.getByteBuffers().get(0)));
+        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, BsonTest.class);
+        System.out.println(bsonTest);
+    }
+
     private BsonTest getObject() {
         BsonTest bsonTest = new BsonTest();
         bsonTest.setTestDouble(20.00);
@@ -97,8 +113,9 @@ public class BsonDocumentConverterTest {
         testArray.add(test1);
         bsonTest.setTestArray(testArray);
         bsonTest.setBsonTest(test1);
-        bsonTest.setTestObjectId(new ObjectId());
-        bsonTest.setTestStringObjectId("59074307568fad36808ff0c5");
+        ObjectId testObjectId = new ObjectId();
+        bsonTest.setTestObjectId(testObjectId);
+        bsonTest.setTestStringObjectId(testObjectId.toHexString());
         bsonTest.setTestBoolean(true);
         bsonTest.setTestDate(new Date());
         bsonTest.setTestNull(null);

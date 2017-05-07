@@ -5,6 +5,7 @@ import org.bson.BsonDocument;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
@@ -115,10 +116,10 @@ class BsonDocumentConverter {
             return BsonValueConverterRepertory.getBsonArrayConverter().decode(bsonReader, field);
         }
         if (currentBsonType == BsonType.OBJECT_ID) {
-            ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
+            ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getByteIOConverterByBsonType(currentBsonType).decode(bsonReader);
             return getObjectIdByRealType(field.getType(), objectId);
         }
-        return BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
+        return BsonValueConverterRepertory.getByteIOConverterByBsonType(currentBsonType).decode(bsonReader);
     }
 
     private Object getJavaValueFromBsonValue(BsonValue bsonValue, Field field) {
@@ -140,31 +141,68 @@ class BsonDocumentConverter {
         for (Entry<String, Field> entry : bsonNameFieldInfoMap.entrySet()) {
             String bsonName = entry.getKey();
             Field field = entry.getValue();
-            Class<?> fieldType = field.getType();
             Object fieldValue = Utils.getFieldValue(field, object);
             if (fieldValue == null || Utils.isIgnored(field)) {
                 continue;
             }
+            Class<?> fieldType = field.getType();
             if (Utils.isArrayField(fieldType)) {
                 BsonValueConverterRepertory.getBsonArrayConverter().encode(bsonDocument, field, fieldValue);
                 continue;
             }
-            if (Utils.fieldIsObjectId(field)) {
-                fieldType = ObjectId.class;
-            }
             if (BsonValueConverterRepertory.isCanConverterValueType(fieldType)) {
+                if (Utils.fieldIsObjectId(field)) {
+                    fieldType = ObjectId.class;
+                }
                 BsonValueConverter valueConverter = BsonValueConverterRepertory.getValueConverterByClazz(fieldType);
                 if (valueConverter != null) {
                     bsonDocument.put(bsonName, valueConverter.encode(fieldValue));
                 } else {
                     //              maybe log warn message to remind user add converter
                 }
+            } else {
+                BsonDocument valueDocument = new BsonDocument();
+                BsonValueConverterRepertory.getBsonDocumentConverter().encode(valueDocument, fieldValue);
+                bsonDocument.put(bsonName, valueDocument);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void encode(BsonWriter bsonWriter, Object object) {
+        bsonWriter.writeStartDocument();
+        Map<String, Field> bsonNameFieldInfoMap = getBsonNameFieldInfoMap(object.getClass());
+        for (Entry<String, Field> entry : bsonNameFieldInfoMap.entrySet()) {
+            Field field = entry.getValue();
+            Object fieldValue = Utils.getFieldValue(field, object);
+            if (fieldValue == null || Utils.isIgnored(field)) {
                 continue;
             }
-            BsonDocument valueDocument = new BsonDocument();
-            BsonValueConverterRepertory.getBsonDocumentConverter().encode(valueDocument, fieldValue);
-            bsonDocument.put(bsonName, valueDocument);
+            String bsonName = entry.getKey();
+            bsonWriter.writeName(bsonName);
+            Class<?> fieldType = field.getType();
+            if (Utils.isArrayField(fieldType)) {
+                BsonValueConverterRepertory.getBsonArrayConverter().encode(bsonWriter, field, fieldValue);
+                continue;
+            }
+            if (BsonValueConverterRepertory.isCanConverterValueType(fieldType)) {
+                if (Utils.fieldIsObjectId(field)) {
+                    if (String.class.isAssignableFrom(fieldType)) {
+                        fieldValue = new ObjectId((String) fieldValue);
+                    }
+                    fieldType = ObjectId.class;
+                }
+                BsonByteIOConverter valueConverter = BsonValueConverterRepertory.getByteIOConverterByClazz(fieldType);
+                if (valueConverter != null) {
+                    valueConverter.encode(bsonWriter, fieldValue);
+                } else {
+                    //              maybe log warn message to remind user add converter
+                }
+            } else {
+                BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, fieldValue);
+            }
         }
+        bsonWriter.writeEndDocument();
     }
 
 }

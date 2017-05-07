@@ -3,11 +3,12 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonInt32;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonIntegerConverter implements BsonValueConverter<Integer, BsonInt32>, BsonReaderConverter<Integer> {
+class BsonIntegerConverter implements BsonValueConverter<Integer, BsonInt32>, BsonByteIOConverter<Integer> {
 
     private BsonIntegerConverter() {
     }
@@ -27,7 +28,12 @@ class BsonIntegerConverter implements BsonValueConverter<Integer, BsonInt32>, Bs
     }
 
     @Override
-    public Integer decode(BsonReader binaryReader) {
-        return binaryReader.readInt32();
+    public Integer decode(BsonReader bsonReader) {
+        return bsonReader.readInt32();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Integer value) {
+        bsonWriter.writeInt32(value);
     }
 }

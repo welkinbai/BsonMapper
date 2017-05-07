@@ -3,12 +3,13 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonJavaScript;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.Code;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, BsonReaderConverter<Code> {
+class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, BsonByteIOConverter<Code> {
 
     private BsonCodeConverter() {
     }
@@ -30,5 +31,10 @@ class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, Bso
     @Override
     public Code decode(BsonReader bsonReader) {
         return new Code(bsonReader.readJavaScript());
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Code value) {
+        bsonWriter.writeJavaScript(value.getCode());
     }
 }

@@ -1,7 +1,10 @@
 package me.welkinbai.bsonmapper;
 
 import org.bson.BsonBinaryReader;
+import org.bson.BsonBinaryWriter;
 import org.bson.BsonDocument;
+import org.bson.BsonWriter;
+import org.bson.io.BasicOutputBuffer;
 import org.bson.io.BsonInput;
 import org.bson.io.BsonOutput;
 import org.bson.json.JsonReader;
@@ -71,16 +74,24 @@ public class DefaultBsonMapper implements BsonMapper {
     }
 
     @Override
-    public void writeTo(BsonDocument bsonDocument, Object object) {
-        if (bsonDocument == null || object == null) {
-            return;
+    public BsonDocument writeToBsonDocument(Object object) {
+        if (object == null) {
+            return null;
         }
+        BsonDocument bsonDocument = new BsonDocument();
         BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object);
+        return bsonDocument;
     }
 
     @Override
-    public void writeTo(BsonOutput bsonOutput, Object object) {
-
+    public BsonOutput writeToBsonOutput(Object object) {
+        if (object == null) {
+            return null;
+        }
+        BsonOutput bsonOutput = new BasicOutputBuffer();
+        BsonWriter bsonBinaryWriter = new BsonBinaryWriter(bsonOutput);
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonBinaryWriter, object);
+        return bsonOutput;
     }
 
     @Override

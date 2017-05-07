@@ -4,12 +4,13 @@ import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonObjectId;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.ObjectId;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId>, BsonReaderConverter<ObjectId> {
+class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId>, BsonByteIOConverter<ObjectId> {
 
     private BsonObjectIdConverter() {
     }
@@ -35,7 +36,12 @@ class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId
     }
 
     @Override
-    public ObjectId decode(BsonReader binaryReader) {
-        return binaryReader.readObjectId();
+    public ObjectId decode(BsonReader bsonReader) {
+        return bsonReader.readObjectId();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, ObjectId value) {
+        bsonWriter.writeObjectId(value);
     }
 }

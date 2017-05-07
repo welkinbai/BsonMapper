@@ -3,12 +3,13 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonMinKey;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.MinKey;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKey>, BsonReaderConverter<MinKey> {
+public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKey>, BsonByteIOConverter<MinKey> {
 
     private BsonMinKeyConverter() {
     }
@@ -28,7 +29,12 @@ public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKe
     }
 
     @Override
-    public MinKey decode(BsonReader bsonBinaryReader) {
+    public MinKey decode(BsonReader bsonReader) {
         return new MinKey();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, MinKey value) {
+        bsonWriter.writeMinKey();
     }
 }

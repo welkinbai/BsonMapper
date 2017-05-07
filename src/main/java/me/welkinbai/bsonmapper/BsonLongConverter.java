@@ -3,11 +3,12 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonInt64;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-public class BsonLongConverter implements BsonValueConverter<Long, BsonInt64>, BsonReaderConverter<Long> {
+public class BsonLongConverter implements BsonValueConverter<Long, BsonInt64>, BsonByteIOConverter<Long> {
 
     private BsonLongConverter() {
     }
@@ -27,7 +28,12 @@ public class BsonLongConverter implements BsonValueConverter<Long, BsonInt64>, B
     }
 
     @Override
-    public Long decode(BsonReader binaryReader) {
-        return binaryReader.readInt64();
+    public Long decode(BsonReader bsonReader) {
+        return bsonReader.readInt64();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Long value) {
+        bsonWriter.writeInt64(value);
     }
 }

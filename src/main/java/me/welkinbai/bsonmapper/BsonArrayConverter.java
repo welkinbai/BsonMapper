@@ -7,6 +7,7 @@ import org.bson.BsonDocument;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Array;
@@ -70,7 +71,7 @@ class BsonArrayConverter {
             if (currentBsonType == BsonType.ARRAY) {
                 arrayList.add(handleArray(bsonReader, fieldType.getComponentType()));
             } else {
-                Object javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
+                Object javaValue = BsonValueConverterRepertory.getByteIOConverterByBsonType(currentBsonType).decode(bsonReader);
                 arrayList.add(javaValue);
             }
         }
@@ -137,10 +138,10 @@ class BsonArrayConverter {
                 if (currentBsonType == BsonType.DOCUMENT) {
                     javaValue = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, targetComponentClazz);
                 } else if (currentBsonType == BsonType.OBJECT_ID) {
-                    ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
+                    ObjectId objectId = (ObjectId) BsonValueConverterRepertory.getByteIOConverterByBsonType(currentBsonType).decode(bsonReader);
                     javaValue = Utils.getObjectIdByRealType(targetComponentClazz, objectId);
                 } else {
-                    javaValue = BsonValueConverterRepertory.getBinaryReaderConverterByBsonType(currentBsonType).decode(bsonReader);
+                    javaValue = BsonValueConverterRepertory.getByteIOConverterByBsonType(currentBsonType).decode(bsonReader);
                 }
                 Utils.methodInvoke(method, collectionObject, javaValue);
             }
@@ -157,15 +158,7 @@ class BsonArrayConverter {
             Class<?> componentType = fieldType.getComponentType();
             Object[] arrayValue = (Object[]) fieldValue;
             for (Object o : arrayValue) {
-                if (componentType.isInstance(o)) {
-                    if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
-                        arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(o));
-                    } else {
-                        BsonDocument arrayEle = new BsonDocument();
-                        BsonValueConverterRepertory.getBsonDocumentConverter().encode(arrayEle, o);
-                        arrayList.add(arrayEle);
-                    }
-                }
+                fillListByValueForArrayElement(arrayList, componentType, o);
             }
         } else if (Collection.class.isAssignableFrom(fieldType)) {
             BsonArrayField fieldAnnotation = Utils.getBsonArrayFieldAnnotation(field);
@@ -173,15 +166,7 @@ class BsonArrayConverter {
             if (Set.class.isAssignableFrom(fieldType) || List.class.isAssignableFrom(fieldType)) {
                 Collection fieldSet = (Collection) fieldValue;
                 for (Object o : fieldSet) {
-                    if (componentType.isInstance(o)) {
-                        if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
-                            arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(o));
-                        } else {
-                            BsonDocument arrayEle = new BsonDocument();
-                            BsonValueConverterRepertory.getBsonDocumentConverter().encode(arrayEle, o);
-                            arrayList.add(arrayEle);
-                        }
-                    }
+                    fillListByValueForArrayElement(arrayList, componentType, o);
                 }
             } else {
                 return;
@@ -190,5 +175,54 @@ class BsonArrayConverter {
             throw new BsonMapperConverterException("exception should be never happen.the field:" + bsonName + "should be array or Collection");
         }
         bsonDocument.put(bsonName, new BsonArray(arrayList));
+    }
+
+    private void fillListByValueForArrayElement(ArrayList<BsonValue> arrayList, Class<?> componentType, Object o) {
+        if (componentType.isInstance(o)) {
+            if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
+                arrayList.add(BsonValueConverterRepertory.getValueConverterByClazz(componentType).encode(o));
+            } else {
+                BsonDocument arrayEle = new BsonDocument();
+                BsonValueConverterRepertory.getBsonDocumentConverter().encode(arrayEle, o);
+                arrayList.add(arrayEle);
+            }
+        }
+    }
+
+    public void encode(BsonWriter bsonWriter, Field field, Object fieldValue) {
+        bsonWriter.writeStartArray();
+        Class<?> fieldType = field.getType();
+        if (fieldType.isArray()) {
+            Class<?> componentType = fieldType.getComponentType();
+            Object[] arrayValue = (Object[]) fieldValue;
+            for (Object value : arrayValue) {
+                writeByValueForArrayElement(bsonWriter, componentType, value);
+            }
+        } else if (Collection.class.isAssignableFrom(fieldType)) {
+            BsonArrayField fieldAnnotation = Utils.getBsonArrayFieldAnnotation(field);
+            Class<?> componentType = fieldAnnotation.componentType();
+            if (Set.class.isAssignableFrom(fieldType) || List.class.isAssignableFrom(fieldType)) {
+                Collection fieldSet = (Collection) fieldValue;
+                for (Object value : fieldSet) {
+                    writeByValueForArrayElement(bsonWriter, componentType, value);
+                }
+            } else {
+                return;
+            }
+        } else {
+            throw new BsonMapperConverterException("exception should be never happen.the field:" + Utils.getBsonName(field) + "should be array or Collection");
+        }
+        bsonWriter.writeEndArray();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void writeByValueForArrayElement(BsonWriter bsonWriter, Class<?> componentType, Object value) {
+        if (componentType.isInstance(value)) {
+            if (BsonValueConverterRepertory.isCanConverterValueType(componentType)) {
+                BsonValueConverterRepertory.getByteIOConverterByClazz(componentType).encode(bsonWriter, value);
+            } else {
+                BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, value);
+            }
+        }
     }
 }

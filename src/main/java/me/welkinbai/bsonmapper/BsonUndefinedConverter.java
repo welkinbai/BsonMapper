@@ -4,11 +4,12 @@ import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonReader;
 import org.bson.BsonUndefined;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined, BsonUndefined>, BsonReaderConverter<BsonUndefined> {
+class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined, BsonUndefined>, BsonByteIOConverter<BsonUndefined> {
 
     private BsonUndefinedConverter() {
     }
@@ -29,6 +30,11 @@ class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined, BsonUn
 
     @Override
     public BsonUndefined decode(BsonReader bsonReader) {
+        throw new BsonMapperConverterException("BsonUndefined type is not support");
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, BsonUndefined value) {
         throw new BsonMapperConverterException("BsonUndefined type is not support");
     }
 }

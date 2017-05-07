@@ -5,13 +5,14 @@ import org.bson.BsonDocument;
 import org.bson.BsonJavaScriptWithScope;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.Document;
 import org.bson.types.CodeWithScope;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, BsonJavaScriptWithScope>, BsonReaderConverter<CodeWithScope> {
+class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, BsonJavaScriptWithScope>, BsonByteIOConverter<CodeWithScope> {
 
     private BsonCodeWithScopeConverter() {
     }
@@ -34,7 +35,13 @@ class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, Bs
 
     @Override
     public CodeWithScope decode(BsonReader bsonReader) {
+//todo_welkin 研究一下javaScriptWithScope是什么类型
         throw new BsonMapperConverterException("could not convert to CodeWithScope when use BsonBinaryReader.BsonBinaryReader haven't gave us scope.");
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, CodeWithScope value) {
+        bsonWriter.writeJavaScriptWithScope(value.getCode());
     }
 
 }

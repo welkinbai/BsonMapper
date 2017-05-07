@@ -3,11 +3,12 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonDouble;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/23.
  */
-class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, BsonReaderConverter<Double> {
+class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, BsonByteIOConverter<Double> {
 
     private BsonDoubleConverter() {
     }
@@ -29,5 +30,10 @@ class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, Bso
     @Override
     public Double decode(BsonReader bsonReader) {
         return bsonReader.readDouble();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Double value) {
+        bsonWriter.writeDouble(value);
     }
 }

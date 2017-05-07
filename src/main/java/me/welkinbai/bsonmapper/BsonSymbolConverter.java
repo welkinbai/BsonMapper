@@ -3,12 +3,13 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonReader;
 import org.bson.BsonSymbol;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.Symbol;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonSymbolConverter implements BsonValueConverter<Symbol, BsonSymbol>, BsonReaderConverter<Symbol> {
+class BsonSymbolConverter implements BsonValueConverter<Symbol, BsonSymbol>, BsonByteIOConverter<Symbol> {
 
     private BsonSymbolConverter() {
     }
@@ -30,5 +31,10 @@ class BsonSymbolConverter implements BsonValueConverter<Symbol, BsonSymbol>, Bso
     @Override
     public Symbol decode(BsonReader bsonReader) {
         return new Symbol(bsonReader.readSymbol());
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Symbol value) {
+        bsonWriter.writeSymbol(value.getSymbol());
     }
 }

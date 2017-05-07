@@ -19,9 +19,9 @@ public interface BsonMapper {
 
     <T> T readFrom(String jsonString, Class<T> targetClazz);
 
-    void writeTo(BsonDocument bsonDocument, Object object);
+    BsonDocument writeToBsonDocument(Object object);
 
-    void writeTo(BsonOutput bsonOutput, Object object);
+    BsonOutput writeToBsonOutput(Object object);
 
     String writeAsJsonStr(Object object);
 }

@@ -3,11 +3,12 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonBoolean;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonBooleanConverter implements BsonValueConverter<Boolean, BsonBoolean>, BsonReaderConverter<Boolean> {
+class BsonBooleanConverter implements BsonValueConverter<Boolean, BsonBoolean>, BsonByteIOConverter<Boolean> {
 
     private BsonBooleanConverter() {
     }
@@ -29,5 +30,10 @@ class BsonBooleanConverter implements BsonValueConverter<Boolean, BsonBoolean>, 
     @Override
     public Boolean decode(BsonReader bsonReader) {
         return bsonReader.readBoolean();
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Boolean value) {
+        bsonWriter.writeBoolean(value);
     }
 }

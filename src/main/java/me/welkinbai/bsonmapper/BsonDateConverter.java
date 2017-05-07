@@ -3,13 +3,14 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonDateTime;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
+import org.bson.BsonWriter;
 
 import java.util.Date;
 
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonDateConverter implements BsonValueConverter<Date, BsonDateTime>, BsonReaderConverter<Date> {
+class BsonDateConverter implements BsonValueConverter<Date, BsonDateTime>, BsonByteIOConverter<Date> {
 
     private BsonDateConverter() {
     }
@@ -31,5 +32,10 @@ class BsonDateConverter implements BsonValueConverter<Date, BsonDateTime>, BsonR
     @Override
     public Date decode(BsonReader bsonReader) {
         return new Date(bsonReader.readDateTime());
+    }
+
+    @Override
+    public void encode(BsonWriter bsonWriter, Date value) {
+        bsonWriter.writeDateTime(value.getTime());
     }
 }
