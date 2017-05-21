@@ -25,7 +25,7 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
     MongoCollection<Document> testCol = testDatabase.getCollection("test_col");
     Book book = new Book();
     book.setName("testBook");
-    book.setAmount(30.21 + Math.random());
+    book.setAmount(30.21);
     book.setAuthor("welkin");
     book.setPageNum(125);
     book.setHasCover(true);
