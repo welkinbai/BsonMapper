@@ -17,6 +17,7 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 
 5. 除了在POJO和BsonDocument之间转换外，还支持在与`BsonInput\BsonOutput`以及`jsonString`之间转换
 6. 和Mongo java driver共用来简化操作
+
 本项目主要是为了方便使用原生的Mongo java driver来存取MongoDB的数据，然而Mongo-java-driver包非常智障地使用`codec`，这就要求用户在使用的时候要为每个POJO编写codec来实现document到POJO之间的转换。
 使用本项目可以直接如下操作：
 ```java
