@@ -1,6 +1,6 @@
 # BsonMapper
-a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
-一个轻量级封装库实现POJO和BSON之间的转换
+a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse  
+一个轻量级封装库实现POJO和BSON之间的转换  
 
 ## 中文
 ### 快速开始
