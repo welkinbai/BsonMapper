@@ -53,9 +53,9 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
     Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
 ### 问题与反馈
-目前本项目处于初期阶段，刚刚完成基本功能。
-注意，可能会有bug，不可以应用到生产环境。
-个人能力有限，欢迎提出issues以及pull request。
+目前本项目处于初期阶段，刚刚完成基本功能。  
+注意，可能会有bug，不可以应用到生产环境。  
+个人能力有限，欢迎提出issues以及pull request。  
 
 ## English
 
