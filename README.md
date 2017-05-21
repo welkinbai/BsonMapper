@@ -52,6 +52,12 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
     BsonDocument first = testCol.find().first();
     Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
+### 使用注解
+在POJO上可以使用以下注解：
+- `@BsonField`：可以指定映射到Bson时的名称以及是否为ObjectId
+- `@BsonIgnore`：忽略该字段
+- `@BsonArrayField`：如果是一个List或者Set，由于泛型擦除导致的问题，必须手动指定数组中存放的对象类型
+
 ### 问题与反馈
 目前本项目处于初期阶段，刚刚完成基本功能。  
 注意，可能会有bug，不可以应用到生产环境。  
@@ -105,6 +111,12 @@ Or you can do conversion with BsonMapper, whose efficiency is higher than MongoB
     BsonDocument first = testCol.find().first();
     Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
+
+### use annotation
+You can use these annotations in POJO：
+- `@BsonField`：define name of Bson field and if it is a ObjectId
+- `@BsonIgnore`：will ignore the field when converting
+- `@BsonArrayField`：if the field is a List or Set，must define component Type because of generic erase problem.
 
 ### Question and Feedback  
 This project is now in its early stages with basic functions.  
