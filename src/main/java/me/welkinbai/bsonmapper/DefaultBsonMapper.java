@@ -3,7 +3,11 @@ package me.welkinbai.bsonmapper;
 import org.bson.BsonBinaryReader;
 import org.bson.BsonBinaryWriter;
 import org.bson.BsonDocument;
+import org.bson.BsonValue;
 import org.bson.BsonWriter;
+import org.bson.Document;
+import org.bson.codecs.DocumentCodec;
+import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.io.BasicOutputBuffer;
 import org.bson.io.BsonInput;
 import org.bson.io.BsonOutput;
@@ -12,6 +16,7 @@ import org.bson.json.JsonWriter;
 
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
+import java.util.Map.Entry;
 
 import static me.welkinbai.bsonmapper.Utils.checkIsSupportClazz;
 import static me.welkinbai.bsonmapper.Utils.checkNotNull;
@@ -20,7 +25,7 @@ import static me.welkinbai.bsonmapper.Utils.isStrEmpty;
 /**
  * Created by welkinbai on 2017/3/21.
  */
-public class DefaultBsonMapper implements BsonMapper {
+public class DefaultBsonMapper implements BsonMapper, MongoBsonMapper {
 
     private static final String NOT_NULL_MSG = "targetClazz should not be Null!";
     private static final String NOT_SUPPORT_CLAZZ_MSG = "targetClazz should not be a common value Clazz or Collection/Array Clazz.It should be a real Object.clazz name:";
@@ -29,6 +34,10 @@ public class DefaultBsonMapper implements BsonMapper {
     }
 
     public static BsonMapper defaultBsonMapper() {
+        return new DefaultBsonMapper();
+    }
+
+    public static MongoBsonMapper defaultMongoBsonMapper() {
         return new DefaultBsonMapper();
     }
 
@@ -76,6 +85,12 @@ public class DefaultBsonMapper implements BsonMapper {
     }
 
     @Override
+    public <T> T readFrom(Document document, Class<T> target) {
+        BsonDocument bsonDocument = document.toBsonDocument(target, CodecRegistries.fromCodecs(new DocumentCodec()));
+        return (T) TDocument.fromBsonDocument(bsonDocument, target).getEquivalentPOJO(this);
+    }
+
+    @Override
     public BsonDocument writeToBsonDocument(Object object) {
         if (object == null) {
             return null;
@@ -83,6 +98,20 @@ public class DefaultBsonMapper implements BsonMapper {
         BsonDocument bsonDocument = new BsonDocument();
         BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object);
         return bsonDocument;
+    }
+
+    @Override
+    public Document writeToMongoDocument(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        BsonDocument bsonDocument = new BsonDocument();
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, obj);
+        Document document = new Document();
+        for (Entry<String, BsonValue> entry : bsonDocument.entrySet()) {
+            document.put(entry.getKey(), entry.getValue());
+        }
+        return document;
     }
 
     @Override
