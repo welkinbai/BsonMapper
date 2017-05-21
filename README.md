@@ -3,8 +3,8 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 一个轻量级封装库实现POJO和BSON之间的转换  
 
 ## Menu
-[中文](#中文)  
-[English](#English)
+[中文](#中文)    
+[English](#english)
 
 ## 中文
 ### 快速开始
