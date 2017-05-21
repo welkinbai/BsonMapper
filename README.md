@@ -2,7 +2,11 @@
 a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse  
 一个轻量级封装库实现POJO和BSON之间的转换  
 
-## 中文
+## Menu
+[中文](#1)  
+[English](#2)
+
+## 中文<span id="1"></span>
 ### 快速开始
 1. 计划上传至Maven中央库，目前在审核中，可先通过Release下载JAR包使用
 2. 支持JDK6+
@@ -63,7 +67,7 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 注意，可能会有bug，不可以应用到生产环境。  
 个人能力有限，欢迎提出issues以及pull request。  
 
-## English
+## English<span id=2></span>
 ### Quick Start  
 1. Plan to upload it to the Maven central library, and you can download JAR package through Release to use  since it is under review.
 2. Support JDK 6+
