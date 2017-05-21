@@ -38,18 +38,18 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 还可使用`BsonMapper`来进行转换，在对象特别大的时候，效率高于`MongoBsonMapper`:
 ```java
     MongoDatabase testDatabase = mongoClient.getDatabase("test");
-    MongoCollection<Document> testCol = testDatabase.getCollection("test_col");
+    MongoCollection<BsonDocument> testCol = testDatabase.getCollection("test_col", BsonDocument.class);
     Book book = new Book();
     book.setName("testBook");
-    book.setAmount(30.21 + Math.random());
+    book.setAmount(30.21);
     book.setAuthor("welkin");
     book.setPageNum(125);
     book.setHasCover(true);
-    MongoBsonMapper mongoBsonMapper = DefaultBsonMapper.defaultMongoBsonMapper();
-    testCol.insertOne(mongoBsonMapper.writeToMongoDocument(book)); 
+    BsonMapper bsonMapper = DefaultBsonMapper.defaultBsonMapper();
+    testCol.insertOne(bsonMapper.writeToBsonDocument(book));
     
-    Document first = testCol.find().first();
-    Book bookFromDb = mongoBsonMapper.readFrom(first, Book.class);
+    BsonDocument first = testCol.find().first();
+    Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
 ### 问题与反馈
 目前本项目处于初期阶段，刚刚完成基本功能。
