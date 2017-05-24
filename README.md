@@ -49,7 +49,7 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
     MongoBsonMapper mongoBsonMapper = DefaultBsonMapper.defaultMongoBsonMapper();
     testCol.insertOne(mongoBsonMapper.writeToMongoDocument(book));
     
-    BsonDocument first = testCol.find().first();
+    Document first = testCol.find().first();
     Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
 还可使用`BsonMapper`来进行转换，在对象特别大的时候，效率高于`MongoBsonMapper`:
@@ -120,7 +120,7 @@ This project is mainly in order to facilitate the use of native Mongo Java drive
     MongoBsonMapper mongoBsonMapper = DefaultBsonMapper.defaultMongoBsonMapper();
     testCol.insertOne(mongoBsonMapper.writeToMongoDocument(book));
     
-    BsonDocument first = testCol.find().first();
+    Document first = testCol.find().first();
     Book bookFromDb = bsonMapper.readFrom(first, Book.class);
 ```
 Or you can do conversion with BsonMapper, whose efficiency is higher than MongoBsonMapper when the object is too big.
