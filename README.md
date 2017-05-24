@@ -19,7 +19,7 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 ```groovy
 compile 'me.welkinbai:BsonMapper:0.0.1'
 ```
-或者下载JAR
+或者下载JAR  
 2. 支持JDK6+
 3. 主要有两个接口：`BsonMapper`和`MongoBsonMapper`
 4. 提供了实现类`DefaultBsonMapper`，用法如下：
@@ -91,7 +91,7 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
 ```groovy
 compile 'me.welkinbai:BsonMapper:0.0.1'
 ```
-Or dawnload JAR
+Or dawnload JAR  
 2. Support JDK 6+
 3. Two main interfaces:`BsonMapper` and `MongoBsonMapper`
 4. A implementing class(`DefaultBsonMapper`) is provided and usage is as follows:
