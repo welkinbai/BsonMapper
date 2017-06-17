@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Created by baixiaoxuan on 2017/3/23.
  */
-public class BsonValueConverterRepertory {
+public final class BsonValueConverterRepertory {
     private final static Map<Class<?>, BsonConverter> CLASS_BSON_VALUE_CONVERTER_MAP = new HashMap<Class<?>, BsonConverter>();
     private final static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
     private final static BsonDocumentConverter BSON_DOCUMENT_CONVERTER = BsonDocumentConverter.getInstance();

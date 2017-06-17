@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-class BsonStringConverter implements BsonValueConverter<String, BsonString>, BsonByteIOConverter<String> {
+final class BsonStringConverter implements BsonValueConverter<String, BsonString>, BsonByteIOConverter<String> {
 
     private BsonStringConverter() {
     }

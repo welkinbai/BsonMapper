@@ -12,7 +12,7 @@ import org.bson.types.CodeWithScope;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, BsonJavaScriptWithScope>, BsonByteIOConverter<CodeWithScope> {
+final class BsonCodeWithScopeConverter implements BsonValueConverter<CodeWithScope, BsonJavaScriptWithScope>, BsonByteIOConverter<CodeWithScope> {
 
     private BsonCodeWithScopeConverter() {
     }

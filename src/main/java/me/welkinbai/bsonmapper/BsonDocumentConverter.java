@@ -23,7 +23,7 @@ import static me.welkinbai.bsonmapper.Utils.isIgnored;
 /**
  * Created by baixiaoxuan on 2017/3/23.
  */
-class BsonDocumentConverter {
+final class BsonDocumentConverter {
 
     private BsonDocumentConverter() {
     }

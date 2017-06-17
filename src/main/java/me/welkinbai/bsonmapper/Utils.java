@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * Created by baixiaoxuan on 2017/3/23.
  */
-class Utils {
+final class Utils {
     private static final String SETTER_PREFIX = "set";
     private static final String GETTER_PREFIX = "get";
 

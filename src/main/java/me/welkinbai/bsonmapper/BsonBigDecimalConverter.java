@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal, BsonDecimal128>, BsonByteIOConverter<BigDecimal> {
+final class BsonBigDecimalConverter implements BsonValueConverter<BigDecimal, BsonDecimal128>, BsonByteIOConverter<BigDecimal> {
 
     private BsonBigDecimalConverter() {
     }

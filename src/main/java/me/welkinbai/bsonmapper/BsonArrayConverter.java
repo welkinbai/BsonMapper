@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-class BsonArrayConverter {
+final class BsonArrayConverter {
 
     private BsonArrayConverter() {
     }

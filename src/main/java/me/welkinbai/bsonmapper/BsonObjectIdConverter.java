@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId>, BsonByteIOConverter<ObjectId> {
+final class BsonObjectIdConverter implements BsonValueConverter<ObjectId, BsonObjectId>, BsonByteIOConverter<ObjectId> {
 
     private BsonObjectIdConverter() {
     }

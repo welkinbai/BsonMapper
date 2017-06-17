@@ -9,7 +9,7 @@ import org.bson.types.Code;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, BsonByteIOConverter<Code> {
+final class BsonCodeConverter implements BsonValueConverter<Code, BsonJavaScript>, BsonByteIOConverter<Code> {
 
     private BsonCodeConverter() {
     }
