@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public final class BsonValueConverterRepertory {
     private final static Map<Class<?>, BsonConverter> CLASS_BSON_CONVERTER_MAP = new HashMap<Class<?>, BsonConverter>();
-    private final static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
+    private static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
     private final static BsonDocumentConverter BSON_DOCUMENT_CONVERTER = BsonDocumentConverter.getInstance();
     private final static BsonArrayConverter BSON_ARRAY_CONVERTER = BsonArrayConverter.getInstance();
 
@@ -102,6 +102,11 @@ public final class BsonValueConverterRepertory {
             throw new IllegalArgumentException(String.format("converter %s should implement BsonByteIOConverter!", bsonConverter.getClass().getName()));
         }
         CLASS_BSON_CONVERTER_MAP.put(clazz, bsonConverter);
+    }
+
+    public static void registerCustomizedBsonTypeClassMap(BsonTypeClassMap bsonTypeClassMap) {
+        Utils.checkNotNull(bsonTypeClassMap, "bsonTypeClassMap should not be null!");
+        BSON_TYPE_CLASS_MAP = bsonTypeClassMap;
     }
 
     public static boolean isValueSupportClazz(Class<?> targetClazz) {
