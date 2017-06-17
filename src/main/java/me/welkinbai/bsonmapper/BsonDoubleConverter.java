@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/23.
  */
-final class BsonDoubleConverter implements BsonValueConverter<Double, BsonDouble>, BsonByteIOConverter<Double> {
+final class BsonDoubleConverter extends AbstractBsonConverter<Double, BsonDouble> {
 
     private BsonDoubleConverter() {
     }

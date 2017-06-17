@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonIntegerConverter implements BsonValueConverter<Integer, BsonInt32>, BsonByteIOConverter<Integer> {
+final class BsonIntegerConverter extends AbstractBsonConverter<Integer, BsonInt32> {
 
     private BsonIntegerConverter() {
     }

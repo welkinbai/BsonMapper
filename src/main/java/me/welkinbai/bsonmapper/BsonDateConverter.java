@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonDateConverter implements BsonValueConverter<Date, BsonDateTime>, BsonByteIOConverter<Date> {
+final class BsonDateConverter extends AbstractBsonConverter<Date, BsonDateTime> {
 
     private BsonDateConverter() {
     }

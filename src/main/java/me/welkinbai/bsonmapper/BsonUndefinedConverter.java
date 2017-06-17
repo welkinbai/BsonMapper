@@ -9,7 +9,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonUndefinedConverter implements BsonValueConverter<BsonUndefined, BsonUndefined>, BsonByteIOConverter<BsonUndefined> {
+final class BsonUndefinedConverter extends AbstractBsonConverter<BsonUndefined, BsonUndefined> {
 
     private BsonUndefinedConverter() {
     }

@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonRegularExpressionConverter implements BsonValueConverter<BsonRegularExpression, BsonRegularExpression>, BsonByteIOConverter<BsonRegularExpression> {
+final class BsonRegularExpressionConverter extends AbstractBsonConverter<BsonRegularExpression, BsonRegularExpression> {
 
     private BsonRegularExpressionConverter() {
     }

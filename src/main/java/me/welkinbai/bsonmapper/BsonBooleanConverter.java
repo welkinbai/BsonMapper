@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonBooleanConverter implements BsonValueConverter<Boolean, BsonBoolean>, BsonByteIOConverter<Boolean> {
+final class BsonBooleanConverter extends AbstractBsonConverter<Boolean, BsonBoolean> {
 
     private BsonBooleanConverter() {
     }

@@ -9,7 +9,7 @@ import org.bson.types.MaxKey;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final public class BsonMaxKeyConverter implements BsonValueConverter<MaxKey, BsonMaxKey>, BsonByteIOConverter<MaxKey> {
+final class BsonMaxKeyConverter extends AbstractBsonConverter<MaxKey, BsonMaxKey> {
 
     private BsonMaxKeyConverter() {
     }

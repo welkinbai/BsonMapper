@@ -13,8 +13,11 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonNull;
 import org.bson.BsonObjectId;
+import org.bson.BsonReader;
 import org.bson.BsonString;
 import org.bson.BsonUndefined;
+import org.bson.BsonValue;
+import org.bson.BsonWriter;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -47,6 +50,32 @@ public class DefaultBsonMapperTest {
         System.out.println(bsonTest.getTestInt());
         System.out.println(bsonTest.getTestLong());
         System.out.println(bsonTest);
+    }
+
+    @Test
+    public void testCustomizedBsonConverter() throws Exception {
+        BsonValueConverterRepertory.registerCustomizedBsonConverter(String.class, new AbstractBsonConverter<String, BsonString>() {
+            @Override
+            public String decode(BsonReader bsonReader) {
+                return "replace string";
+            }
+
+            @Override
+            public void encode(BsonWriter bsonWriter, String value) {
+
+            }
+
+            @Override
+            public String decode(BsonValue bsonValue) {
+                return "replace string";
+            }
+
+            @Override
+            public BsonString encode(Object object) {
+                return new BsonString("replace string");
+            }
+        });
+        readFrom();
     }
 
     @Test

@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonTimestampConverter implements BsonValueConverter<BsonTimestamp, BsonTimestamp>, BsonByteIOConverter<BsonTimestamp> {
+final class BsonTimestampConverter extends AbstractBsonConverter<BsonTimestamp, BsonTimestamp> {
 
     private BsonTimestampConverter() {
     }

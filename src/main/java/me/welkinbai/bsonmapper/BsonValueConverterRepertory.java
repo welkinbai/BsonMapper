@@ -25,7 +25,7 @@ import java.util.Map;
  * Created by baixiaoxuan on 2017/3/23.
  */
 public final class BsonValueConverterRepertory {
-    private final static Map<Class<?>, BsonConverter> CLASS_BSON_VALUE_CONVERTER_MAP = new HashMap<Class<?>, BsonConverter>();
+    private final static Map<Class<?>, BsonConverter> CLASS_BSON_CONVERTER_MAP = new HashMap<Class<?>, BsonConverter>();
     private final static BsonTypeClassMap BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
     private final static BsonDocumentConverter BSON_DOCUMENT_CONVERTER = BsonDocumentConverter.getInstance();
     private final static BsonArrayConverter BSON_ARRAY_CONVERTER = BsonArrayConverter.getInstance();
@@ -34,46 +34,46 @@ public final class BsonValueConverterRepertory {
     }
 
     static {
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(String.class, BsonStringConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Double.class, BsonDoubleConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(double.class, BsonDoubleConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Binary.class, BsonBinaryConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(BsonUndefined.class, BsonUndefinedConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(ObjectId.class, BsonObjectIdConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Boolean.class, BsonBooleanConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(boolean.class, BsonBooleanConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Date.class, BsonDateConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(BsonRegularExpression.class, BsonRegularExpressionConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(BsonDbPointer.class, BsonDbPointerConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Code.class, BsonCodeConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(CodeWithScope.class, BsonCodeWithScopeConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Symbol.class, BsonSymbolConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Integer.class, BsonIntegerConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(int.class, BsonIntegerConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Long.class, BsonLongConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(long.class, BsonLongConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(BsonTimestamp.class, BsonTimestampConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(Decimal128.class, BsonBigDecimalConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(MinKey.class, BsonMinKeyConverter.getInstance());
-        CLASS_BSON_VALUE_CONVERTER_MAP.put(MaxKey.class, BsonMaxKeyConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(String.class, BsonStringConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Double.class, BsonDoubleConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(double.class, BsonDoubleConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Binary.class, BsonBinaryConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(BsonUndefined.class, BsonUndefinedConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(ObjectId.class, BsonObjectIdConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Boolean.class, BsonBooleanConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(boolean.class, BsonBooleanConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Date.class, BsonDateConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(BsonRegularExpression.class, BsonRegularExpressionConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(BsonDbPointer.class, BsonDbPointerConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Code.class, BsonCodeConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(CodeWithScope.class, BsonCodeWithScopeConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Symbol.class, BsonSymbolConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Integer.class, BsonIntegerConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(int.class, BsonIntegerConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Long.class, BsonLongConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(long.class, BsonLongConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(BsonTimestamp.class, BsonTimestampConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(Decimal128.class, BsonBigDecimalConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(MinKey.class, BsonMinKeyConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(MaxKey.class, BsonMaxKeyConverter.getInstance());
     }
 
     static BsonValueConverter getValueConverterByBsonType(BsonType bsonType) {
         Class<?> clazz = getClazzByBsonType(bsonType);
-        return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+        return (BsonValueConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     static BsonValueConverter getValueConverterByClazz(Class<?> clazz) {
-        return (BsonValueConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+        return (BsonValueConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     static BsonByteIOConverter getByteIOConverterByBsonType(BsonType bsonType) {
         Class<?> clazz = getClazzByBsonType(bsonType);
-        return (BsonByteIOConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+        return (BsonByteIOConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     static BsonByteIOConverter getByteIOConverterByClazz(Class<?> clazz) {
-        return (BsonByteIOConverter) CLASS_BSON_VALUE_CONVERTER_MAP.get(clazz);
+        return (BsonByteIOConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     private static Class<?> getClazzByBsonType(BsonType bsonType) {
@@ -92,12 +92,24 @@ public final class BsonValueConverterRepertory {
         return BSON_ARRAY_CONVERTER;
     }
 
+    public static void registerCustomizedBsonConverter(Class<?> clazz, BsonConverter bsonConverter) {
+        Utils.checkNotNull(clazz, "clazz should not be null!");
+        Utils.checkNotNull(bsonConverter, "bsonConverter should not be null!");
+        if (!(bsonConverter instanceof BsonValueConverter)) {
+            throw new IllegalArgumentException(String.format("converter %s should implement BsonValueConverter!", bsonConverter.getClass().getName()));
+        }
+        if (!(bsonConverter instanceof BsonByteIOConverter)) {
+            throw new IllegalArgumentException(String.format("converter %s should implement BsonByteIOConverter!", bsonConverter.getClass().getName()));
+        }
+        CLASS_BSON_CONVERTER_MAP.put(clazz, bsonConverter);
+    }
+
     public static boolean isValueSupportClazz(Class<?> targetClazz) {
-        return CLASS_BSON_VALUE_CONVERTER_MAP.keySet().contains(targetClazz) || Collection.class.isAssignableFrom(targetClazz)
+        return CLASS_BSON_CONVERTER_MAP.keySet().contains(targetClazz) || Collection.class.isAssignableFrom(targetClazz)
                 || targetClazz.isArray();
     }
 
     public static boolean isCanConverterValueType(Class<?> targetClazz) {
-        return CLASS_BSON_VALUE_CONVERTER_MAP.keySet().contains(targetClazz) || targetClazz.isPrimitive();
+        return CLASS_BSON_CONVERTER_MAP.keySet().contains(targetClazz) || targetClazz.isPrimitive();
     }
 }

@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonLongConverter implements BsonValueConverter<Long, BsonInt64>, BsonByteIOConverter<Long> {
+final class BsonLongConverter extends AbstractBsonConverter<Long, BsonInt64> {
 
     private BsonLongConverter() {
     }

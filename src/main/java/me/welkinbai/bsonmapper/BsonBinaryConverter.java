@@ -9,7 +9,7 @@ import org.bson.types.Binary;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonBinaryConverter implements BsonValueConverter<Binary, BsonBinary>, BsonByteIOConverter<Binary> {
+final class BsonBinaryConverter extends AbstractBsonConverter<Binary, BsonBinary> {
     private BsonBinaryConverter() {
     }
 

@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final class BsonDbPointerConverter implements BsonValueConverter<BsonDbPointer, BsonDbPointer>, BsonByteIOConverter<BsonDbPointer> {
+final class BsonDbPointerConverter extends AbstractBsonConverter<BsonDbPointer, BsonDbPointer> {
 
     private BsonDbPointerConverter() {
     }

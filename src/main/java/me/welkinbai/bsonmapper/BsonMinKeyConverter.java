@@ -9,7 +9,7 @@ import org.bson.types.MinKey;
 /**
  * Created by welkinbai on 2017/3/25.
  */
-final public class BsonMinKeyConverter implements BsonValueConverter<MinKey, BsonMinKey>, BsonByteIOConverter<MinKey> {
+final class BsonMinKeyConverter extends AbstractBsonConverter<MinKey, BsonMinKey> {
 
     private BsonMinKeyConverter() {
     }
