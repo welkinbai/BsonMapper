@@ -25,8 +25,8 @@ final class BsonDateConverter extends AbstractBsonConverter<Date, BsonDateTime> 
     }
 
     @Override
-    public BsonDateTime encode(Object object) {
-        return new BsonDateTime(((Date) object).getTime());
+    public BsonDateTime encode(Date object) {
+        return new BsonDateTime(object.getTime());
     }
 
     @Override

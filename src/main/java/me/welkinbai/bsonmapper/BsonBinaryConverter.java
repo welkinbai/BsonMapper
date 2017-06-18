@@ -25,9 +25,8 @@ final class BsonBinaryConverter extends AbstractBsonConverter<Binary, BsonBinary
     }
 
     @Override
-    public BsonBinary encode(Object object) {
-        Binary value = ((Binary) object);
-        return new BsonBinary(value.getType(), value.getData());
+    public BsonBinary encode(Binary object) {
+        return new BsonBinary(object.getType(), object.getData());
     }
 
     @Override

@@ -9,5 +9,5 @@ public interface BsonValueConverter<T, V extends BsonValue> extends BsonConverte
 
     T decode(BsonValue bsonValue);
 
-    V encode(Object object);
+    V encode(T object);
 }

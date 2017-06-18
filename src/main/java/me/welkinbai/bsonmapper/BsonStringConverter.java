@@ -23,8 +23,8 @@ final class BsonStringConverter extends AbstractBsonConverter<String, BsonString
     }
 
     @Override
-    public BsonString encode(Object object) {
-        return new BsonString((String) object);
+    public BsonString encode(String object) {
+        return new BsonString(object);
     }
 
     @Override

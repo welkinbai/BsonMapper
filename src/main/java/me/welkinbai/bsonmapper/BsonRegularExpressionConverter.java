@@ -23,8 +23,8 @@ final class BsonRegularExpressionConverter extends AbstractBsonConverter<BsonReg
     }
 
     @Override
-    public BsonRegularExpression encode(Object object) {
-        return (BsonRegularExpression) object;
+    public BsonRegularExpression encode(BsonRegularExpression object) {
+        return object;
     }
 
     @Override

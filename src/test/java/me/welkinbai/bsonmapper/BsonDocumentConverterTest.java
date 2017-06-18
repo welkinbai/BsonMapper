@@ -65,7 +65,7 @@ public class BsonDocumentConverterTest {
                 .append("testNull", new BsonNull())
                 .append("testInt", new BsonInt32(233))
                 .append("testLong", new BsonInt64(233332));
-        BsonTest bsonTest = BsonDocumentConverter.getInstance().decode(bsonDocument1, BsonTest.class);
+        BsonTest bsonTest = BsonDocumentConverter.getInstance().decode(bsonDocument1, BsonTest.class, BsonMapperConfig.DEFALUT);
         System.out.println(bsonTest.getTestDouble());
         System.out.println(bsonTest.getTestString());
         System.out.println(bsonTest.getTestArray());
@@ -84,9 +84,9 @@ public class BsonDocumentConverterTest {
     public void testEncode() throws Exception {
         BsonDocument bsonDocument = new BsonDocument();
         BsonTest object = getObject();
-        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object);
+        BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonDocument, object, BsonMapperConfig.DEFALUT);
         System.out.println(bsonDocument.toJson());
-        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonDocument, BsonTest.class);
+        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonDocument, BsonTest.class, BsonMapperConfig.DEFALUT);
         System.out.println(bsonTest);
     }
 
@@ -96,7 +96,7 @@ public class BsonDocumentConverterTest {
         BsonWriter bsonWriter = new BsonBinaryWriter(bsonOutput);
         BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, getObject());
         BsonReader bsonReader = new BsonBinaryReader(new ByteBufferBsonInput(bsonOutput.getByteBuffers().get(0)));
-        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, BsonTest.class);
+        BsonTest bsonTest = BsonValueConverterRepertory.getBsonDocumentConverter().decode(bsonReader, BsonTest.class, BsonMapperConfig.DEFALUT);
         System.out.println(bsonTest);
     }
 

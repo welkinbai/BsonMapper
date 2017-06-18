@@ -24,8 +24,8 @@ final class BsonCodeConverter extends AbstractBsonConverter<Code, BsonJavaScript
     }
 
     @Override
-    public BsonJavaScript encode(Object object) {
-        return new BsonJavaScript(((Code) object).getCode());
+    public BsonJavaScript encode(Code object) {
+        return new BsonJavaScript(object.getCode());
     }
 
     @Override

@@ -23,8 +23,8 @@ final class BsonIntegerConverter extends AbstractBsonConverter<Integer, BsonInt3
     }
 
     @Override
-    public BsonInt32 encode(Object object) {
-        return new BsonInt32((Integer) object);
+    public BsonInt32 encode(Integer object) {
+        return new BsonInt32(object);
     }
 
     @Override

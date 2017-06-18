@@ -26,8 +26,8 @@ final class BsonBigDecimalConverter extends AbstractBsonConverter<BigDecimal, Bs
     }
 
     @Override
-    public BsonDecimal128 encode(Object object) {
-        return new BsonDecimal128(new Decimal128((BigDecimal) object));
+    public BsonDecimal128 encode(BigDecimal object) {
+        return new BsonDecimal128(new Decimal128(object));
     }
 
     @Override

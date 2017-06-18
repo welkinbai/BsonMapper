@@ -71,7 +71,7 @@ public class DefaultBsonMapperTest {
             }
 
             @Override
-            public BsonString encode(Object object) {
+            public BsonString encode(String object) {
                 return new BsonString("replace string");
             }
         });
@@ -147,10 +147,10 @@ public class DefaultBsonMapperTest {
         BsonDocumentConverter bsonDocumentConverter = BsonValueConverterRepertory.getBsonDocumentConverter();
         long start = System.nanoTime();
         BsonDocumentReader bsonDocumentReader = new BsonDocumentReader(bsonDocument);
-        BsonTest bsonTest = bsonDocumentConverter.decode(bsonDocumentReader, BsonTest.class);
+        BsonTest bsonTest = bsonDocumentConverter.decode(bsonDocumentReader, BsonTest.class, BsonMapperConfig.DEFALUT);
         System.out.println(System.nanoTime() - start);
         long start2 = System.nanoTime();
-        BsonTest bsonTest1 = bsonDocumentConverter.decode(bsonDocument, BsonTest.class);
+        BsonTest bsonTest1 = bsonDocumentConverter.decode(bsonDocument, BsonTest.class, BsonMapperConfig.DEFALUT);
         System.out.println(System.nanoTime() - start2);
         System.out.println(bsonTest);
         System.out.println(bsonTest1);

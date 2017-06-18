@@ -24,7 +24,7 @@ final class BsonMinKeyConverter extends AbstractBsonConverter<MinKey, BsonMinKey
     }
 
     @Override
-    public BsonMinKey encode(Object object) {
+    public BsonMinKey encode(MinKey object) {
         return new BsonMinKey();
     }
 

@@ -1,6 +1,5 @@
 package me.welkinbai.bsonmapper;
 
-import me.welkinbai.bsonmapper.exception.BsonMapperConverterException;
 import org.bson.BsonObjectId;
 import org.bson.BsonReader;
 import org.bson.BsonValue;
@@ -25,14 +24,8 @@ final class BsonObjectIdConverter extends AbstractBsonConverter<ObjectId, BsonOb
     }
 
     @Override
-    public BsonObjectId encode(Object object) {
-        Class<?> fieldType = object.getClass();
-        if (fieldType == String.class) {
-            return new BsonObjectId(new ObjectId((String) object));
-        } else if (fieldType == ObjectId.class) {
-            return new BsonObjectId((ObjectId) object);
-        }
-        throw new BsonMapperConverterException("can not convert objectId.because unsupported field type:" + fieldType.getName());
+    public BsonObjectId encode(ObjectId object) {
+        return new BsonObjectId(object);
     }
 
     @Override

@@ -23,8 +23,8 @@ final class BsonDoubleConverter extends AbstractBsonConverter<Double, BsonDouble
     }
 
     @Override
-    public BsonDouble encode(Object object) {
-        return new BsonDouble((Double) object);
+    public BsonDouble encode(Double object) {
+        return new BsonDouble(object);
     }
 
     @Override

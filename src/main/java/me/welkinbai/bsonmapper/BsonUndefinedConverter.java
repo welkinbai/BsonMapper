@@ -24,7 +24,7 @@ final class BsonUndefinedConverter extends AbstractBsonConverter<BsonUndefined, 
     }
 
     @Override
-    public BsonUndefined encode(Object object) {
+    public BsonUndefined encode(BsonUndefined object) {
         throw new BsonMapperConverterException("BsonUndefined type is not support");
     }
 

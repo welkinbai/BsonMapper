@@ -19,5 +19,5 @@ public abstract class AbstractBsonConverter<T, V extends BsonValue> implements B
     public abstract T decode(BsonValue bsonValue);
 
     @Override
-    public abstract V encode(Object object);
+    public abstract V encode(T object);
 }

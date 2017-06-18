@@ -23,8 +23,8 @@ final class BsonDbPointerConverter extends AbstractBsonConverter<BsonDbPointer, 
     }
 
     @Override
-    public BsonDbPointer encode(Object object) {
-        return (BsonDbPointer) object;
+    public BsonDbPointer encode(BsonDbPointer object) {
+        return object;
     }
 
     @Override

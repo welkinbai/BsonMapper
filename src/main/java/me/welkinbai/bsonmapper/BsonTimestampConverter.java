@@ -23,8 +23,8 @@ final class BsonTimestampConverter extends AbstractBsonConverter<BsonTimestamp, 
     }
 
     @Override
-    public BsonTimestamp encode(Object object) {
-        return (BsonTimestamp) object;
+    public BsonTimestamp encode(BsonTimestamp object) {
+        return object;
     }
 
     @Override

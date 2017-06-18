@@ -23,8 +23,8 @@ final class BsonLongConverter extends AbstractBsonConverter<Long, BsonInt64> {
     }
 
     @Override
-    public BsonInt64 encode(Object object) {
-        return new BsonInt64((Long) object);
+    public BsonInt64 encode(Long object) {
+        return new BsonInt64(object);
     }
 
     @Override

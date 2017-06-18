@@ -24,8 +24,8 @@ final class BsonSymbolConverter extends AbstractBsonConverter<Symbol, BsonSymbol
     }
 
     @Override
-    public BsonSymbol encode(Object object) {
-        return new BsonSymbol(((Symbol) object).getSymbol());
+    public BsonSymbol encode(Symbol object) {
+        return new BsonSymbol(object.getSymbol());
     }
 
     @Override

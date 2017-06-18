@@ -116,7 +116,7 @@ final class Utils {
     }
 
     public static Object getObjectIdByRealType(Class<?> fieldType, ObjectId objectId) {
-        if (fieldType == String.class) {
+        if (fieldType == String.class || fieldType == StringObjectId.class) {
             return objectId.toHexString();
         } else if (fieldType == ObjectId.class) {
             return objectId;
@@ -156,7 +156,7 @@ final class Utils {
         return value;
     }
 
-    public static boolean isArrayField(Class<?> fieldType) {
+    public static boolean isArrayType(Class<?> fieldType) {
         return fieldType.isArray() || Collection.class.isAssignableFrom(fieldType);
     }
 

@@ -28,15 +28,15 @@ final class BsonCodeWithScopeConverter extends AbstractBsonConverter<CodeWithSco
     }
 
     @Override
-    public BsonJavaScriptWithScope encode(Object object) {
-        CodeWithScope value = (CodeWithScope) object;
-        return new BsonJavaScriptWithScope(value.getCode(), BsonDocument.parse(value.getScope().toJson()));
+    public BsonJavaScriptWithScope encode(CodeWithScope object) {
+        return new BsonJavaScriptWithScope(object.getCode(), BsonDocument.parse(object.getScope().toJson()));
     }
 
     /**
      * JavaScriptWithScope seems a "live" Javascript function in a MongoDB which refers to variables which exist outside the function.
      * detail:https://stackoverflow.com/questions/39155290/what-is-javascript-with-scope-in-mongodb
      * still can't support convert this type because don't know how it is work.
+     *
      * @param bsonReader
      * @return
      */

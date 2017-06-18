@@ -6,6 +6,7 @@ import org.bson.BsonRegularExpression;
 import org.bson.BsonTimestamp;
 import org.bson.BsonType;
 import org.bson.BsonUndefined;
+import org.bson.BsonValue;
 import org.bson.codecs.BsonTypeClassMap;
 import org.bson.types.Binary;
 import org.bson.types.Code;
@@ -56,6 +57,7 @@ public final class BsonValueConverterRepertory {
         CLASS_BSON_CONVERTER_MAP.put(Decimal128.class, BsonBigDecimalConverter.getInstance());
         CLASS_BSON_CONVERTER_MAP.put(MinKey.class, BsonMinKeyConverter.getInstance());
         CLASS_BSON_CONVERTER_MAP.put(MaxKey.class, BsonMaxKeyConverter.getInstance());
+        CLASS_BSON_CONVERTER_MAP.put(StringObjectId.class, BsonStringObjectIdConverter.getInstance());
     }
 
     static BsonValueConverter getValueConverterByBsonType(BsonType bsonType) {
@@ -63,8 +65,8 @@ public final class BsonValueConverterRepertory {
         return (BsonValueConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
-    static BsonValueConverter getValueConverterByClazz(Class<?> clazz) {
-        return (BsonValueConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
+    static <T, V extends BsonValue> BsonValueConverter<T, V> getValueConverterByClazz(Class<?> clazz) {
+        return (BsonValueConverter<T, V>) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     static BsonByteIOConverter getByteIOConverterByBsonType(BsonType bsonType) {
@@ -72,8 +74,8 @@ public final class BsonValueConverterRepertory {
         return (BsonByteIOConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
-    static BsonByteIOConverter getByteIOConverterByClazz(Class<?> clazz) {
-        return (BsonByteIOConverter) CLASS_BSON_CONVERTER_MAP.get(clazz);
+    static <T> BsonByteIOConverter<T> getByteIOConverterByClazz(Class<?> clazz) {
+        return (BsonByteIOConverter<T>) CLASS_BSON_CONVERTER_MAP.get(clazz);
     }
 
     private static Class<?> getClazzByBsonType(BsonType bsonType) {

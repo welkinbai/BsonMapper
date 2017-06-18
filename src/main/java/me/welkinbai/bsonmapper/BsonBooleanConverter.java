@@ -23,8 +23,8 @@ final class BsonBooleanConverter extends AbstractBsonConverter<Boolean, BsonBool
     }
 
     @Override
-    public BsonBoolean encode(Object object) {
-        return new BsonBoolean((Boolean) object);
+    public BsonBoolean encode(Boolean object) {
+        return new BsonBoolean(object);
     }
 
     @Override

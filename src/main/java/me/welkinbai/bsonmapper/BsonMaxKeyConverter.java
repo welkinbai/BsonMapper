@@ -24,7 +24,7 @@ final class BsonMaxKeyConverter extends AbstractBsonConverter<MaxKey, BsonMaxKey
     }
 
     @Override
-    public BsonMaxKey encode(Object object) {
+    public BsonMaxKey encode(MaxKey object) {
         return new BsonMaxKey();
     }
 
