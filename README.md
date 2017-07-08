@@ -74,6 +74,16 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
 - `@BsonIgnore`：忽略该字段
 - `@BsonArrayField`：如果是一个List或者Set，由于泛型擦除导致的问题，必须手动指定数组中存放的对象类型
 
+### 目前进度
+已完成：  
+1. POJO和BSON之间的转换
+2. 支持定义转换时候的最大层数，默认5层，超过会报错
+
+未完成：  
+1. 充分的测试
+2. 更多的自定义选项
+3. 性能进一步优化
+
 ### 问题与反馈
 目前本项目处于初期阶段，刚刚完成基本功能。  
 注意，可能会有bug，不可以应用到生产环境。  
@@ -146,7 +156,17 @@ You can use these annotations in POJO：
 - `@BsonIgnore`：will ignore the field when converting
 - `@BsonArrayField`：if the field is a List or Set，must define component Type because of generic erase problem.
 
-### Question and Feedback  
+### Current Progress
+aleady done:  
+1. convert between POJO and Bson
+2. support config max layer when converting
+
+unfinished:
+1. Fully tested
+2. More config
+3. Further optimization of performance
+
+### Question and Feedback  
 This project is now in its early stages with basic functions.  
 Note that it can not be applied to the production environment in the risk of unpredictable bug.  
 Since my limited capability, issues and pull requests are very welcome.  
