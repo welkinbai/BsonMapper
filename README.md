@@ -77,7 +77,7 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
 ### 目前进度
 已完成：  
 1. POJO和BSON之间的转换
-2. 支持定义转换时候的最大层数，默认5层，超过会报错
+2. 支持定义转换时候的最大层数，默认5层，超过设置的层数会抛exception
 
 未完成：  
 1. 充分的测试
@@ -88,6 +88,7 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
 目前本项目处于初期阶段，刚刚完成基本功能。  
 注意，可能会有bug，不可以应用到生产环境。  
 个人能力有限，欢迎提出issues以及pull request。  
+如果你喜欢本项目，请给予star支持，让更多的人看到。  
 
 ## English
 ### Quick Start  
@@ -159,7 +160,7 @@ You can use these annotations in POJO：
 ### Current Progress
 aleady done:  
 1. convert between POJO and Bson
-2. support config max layer when converting
+2. support config max layer when converting(default value is 5.If exceeded, BsonMapperConverterException will throw)
 
 unfinished:
 1. Fully tested
@@ -169,5 +170,5 @@ unfinished:
 ### Question and Feedback  
 This project is now in its early stages with basic functions.  
 Note that it can not be applied to the production environment in the risk of unpredictable bug.  
-Since my limited capability, issues and pull requests are very welcome.  
-
+Since my limited capability, issues and pull requests are very welcome.    
+If you like this project, please click star.  
