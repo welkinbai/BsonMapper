@@ -1,21 +1,15 @@
 package me.welkinbai.bsonmapper;
 
+import me.welkinbai.bsonmapper.BsonMapperConfig.BsonMapperConfigBuilder;
 import me.welkinbai.bsonmapper.TestPOJO.BsonTest;
 import org.bson.BsonArray;
-import org.bson.BsonBinary;
 import org.bson.BsonBinarySubType;
-import org.bson.BsonBoolean;
-import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
 import org.bson.BsonDocumentReader;
 import org.bson.BsonDouble;
-import org.bson.BsonInt32;
 import org.bson.BsonInt64;
-import org.bson.BsonNull;
-import org.bson.BsonObjectId;
 import org.bson.BsonReader;
 import org.bson.BsonString;
-import org.bson.BsonUndefined;
 import org.bson.BsonValue;
 import org.bson.BsonWriter;
 import org.bson.types.Binary;
@@ -26,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import static me.welkinbai.bsonmapper.TestUtil.getBsonDocument;
 
 /**
  * Created by welkinbai on 2017/4/4.
@@ -50,6 +46,61 @@ public class DefaultBsonMapperTest {
         System.out.println(bsonTest.getTestInt());
         System.out.println(bsonTest.getTestLong());
         System.out.println(bsonTest);
+    }
+
+    @Test
+    public void testReadFromWithConfig() throws Exception {
+        final BsonDocument bsonDocumentHasDeepLayer = getBsonDocumentHasDeepLayer();
+        System.out.println(bsonDocumentHasDeepLayer.toJson());
+        List<Thread> threads = new ArrayList<Thread>();
+        for (int i = 0; i < 2; i++) {
+            final int finalI = i;
+            threads.add(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    BsonMapper bsonMapper = DefaultBsonMapper.defaultBsonMapper(BsonMapperConfigBuilder.Builder().setMaxMapperLayerNum(9- finalI).build());
+                    BsonTest bsonTest = bsonMapper.readFrom(bsonDocumentHasDeepLayer, BsonTest.class);
+                    System.out.println(bsonTest);
+                }
+            }));
+        }
+        for (Thread thread : threads) {
+            thread.run();
+        }
+        for (Thread thread : threads) {
+            thread.join();
+        }
+    }
+
+    private BsonDocument getBsonDocumentHasDeepLayer() {
+        BsonDocument bsonObj = new BsonDocument().append("testDouble", new BsonDouble(20.777));
+        List<BsonDocument> list = new ArrayList<BsonDocument>();
+        list.add(bsonObj);
+        list.add(bsonObj);
+        BsonDocument deepBsonDocument = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("testArray", new BsonArray(list));
+        BsonDocument bsonDocument1 = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("bson_test", deepBsonDocument);
+        BsonDocument bsonDocument2 = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("bson_test", bsonDocument1);
+        BsonDocument bsonDocument3 = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("bson_test", bsonDocument2)
+                .append("testArray", new BsonArray(list));
+        BsonDocument bsonDocument4 = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("bson_test", bsonDocument3)
+                .append("testArray", new BsonArray(list));
+        BsonDocument bsonDocument5 = new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("testString", new BsonString("testStringV"))
+                .append("bson_test", bsonDocument4)
+                .append("testArray", new BsonArray(list));
+        return new BsonDocument().append("testDouble", new BsonDouble(20.99))
+                .append("bson_test", bsonDocument5)
+                .append("testLong", new BsonInt64(233332));
     }
 
     @Test
@@ -111,36 +162,6 @@ public class DefaultBsonMapperTest {
         return bsonTest;
     }
 
-    private BsonDocument getBsonDocument() {
-        BsonDocument bsonObj = new BsonDocument().append("testDouble", new BsonDouble(20.777));
-        List<BsonDocument> list = new ArrayList<BsonDocument>();
-        list.add(bsonObj);
-        list.add(bsonObj);
-        List<BsonArray> arrayList = new ArrayList<BsonArray>();
-        arrayList.add(new BsonArray(list));
-        arrayList.add(new BsonArray(list));
-        byte[] bytes = new byte[3];
-        bytes[0] = 3;
-        bytes[1] = 2;
-        bytes[2] = 1;
-        BsonDocument bsonDocument = new BsonDocument().append("testDouble", new BsonDouble(20.99))
-                .append("testString", new BsonString("testStringV"))
-                .append("testArray", new BsonArray(list));
-        return new BsonDocument().append("testDouble", new BsonDouble(20.99))
-                .append("testString", new BsonString("testStringV"))
-                .append("testArray", new BsonArray(list))
-                .append("bson_test", bsonDocument)
-                .append("testBinary", new BsonBinary(bytes))
-                .append("testBsonUndefined", new BsonUndefined())
-                .append("testObjectId", new BsonObjectId())
-                .append("testStringObjectId", new BsonObjectId())
-                .append("testBooean", new BsonBoolean(true))
-                .append("testDate", new BsonDateTime(new Date().getTime()))
-                .append("testNull", new BsonNull())
-                .append("testInt", new BsonInt32(233))
-                .append("testLong", new BsonInt64(233332));
-    }
-
     @Test
     public void readFrom1() throws Exception {
         BsonDocument bsonDocument = getBsonDocument();
@@ -156,13 +177,5 @@ public class DefaultBsonMapperTest {
         System.out.println(bsonTest1);
     }
 
-    @Test
-    public void readFrom2() throws Exception {
-    }
-
-    @Test
-    public void readFrom3() throws Exception {
-
-    }
 
 }

@@ -158,10 +158,10 @@ final class BsonArrayConverter {
         BsonArrayField bsonArrayField = Utils.getBsonArrayFieldAnnotation(field);
         Class<?> targetComponentClazz = bsonArrayField.componentType();
 
-        Object collectionObject = Utils.newInstanceByClazz(fieldType);
+        Object collectionObject = Utils.newInstanceByClazz(implClass);
         Method method;
         try {
-            method = fieldType.getMethod("add", Object.class);
+            method = implClass.getMethod("add", Object.class);
         } catch (NoSuchMethodException e) {
             throw new BsonMapperConverterException("NoSuchMethodException", e);
         }

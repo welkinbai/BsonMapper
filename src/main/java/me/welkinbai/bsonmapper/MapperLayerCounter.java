@@ -13,13 +13,13 @@ public enum MapperLayerCounter {
     public void addCount(BsonMapperConfig bsonMapperConfig) {
         Integer count = threadLocalCount.get();
         if (count == null) {
-            threadLocalCount.set(0);
+            threadLocalCount.set(1);
             return;
         }
         count++;
         if (count > bsonMapperConfig.getMaxMapperLayerNum()) {
             threadLocalCount.remove();
-            throw new BsonMapperConverterException("exceed max layer in bsonMapperConfig.max layer is " + bsonMapperConfig.getMaxMapperLayerNum());
+            throw new BsonMapperConverterException(String.format("exceed max layer in bsonMapperConfig.current layer is %s.max layer is %s", count, bsonMapperConfig.getMaxMapperLayerNum()));
         }
         threadLocalCount.set(count);
     }
@@ -27,7 +27,7 @@ public enum MapperLayerCounter {
     public void reduceCount() {
         Integer count = threadLocalCount.get();
         if (count == null) {
-            throw new BsonMapperConverterException("reduce count from map error.it should be never happen.please submit issue if happens");
+            return;
         }
         count--;
         if (count < 0) {
