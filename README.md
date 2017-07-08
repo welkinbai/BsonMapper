@@ -167,7 +167,7 @@ unfinished:
 3. Further optimization of performance
 
 ### Question and Feedback  
-This project is now in its early stages with basic functions.  
+This project is now in its early stages with basic functions.  
 Note that it can not be applied to the production environment in the risk of unpredictable bug.  
 Since my limited capability, issues and pull requests are very welcome.  
 
