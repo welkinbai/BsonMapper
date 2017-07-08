@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.sun.javafx.fxml.BeanAdapter.IS_PREFIX;
+
 /**
  * Created by baixiaoxuan on 2017/3/23.
  */
@@ -33,6 +35,10 @@ final class Utils {
 
     public static String makeGetterName(String name) {
         return GETTER_PREFIX + name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
+    private static String makeIsGetterName(String name) {
+        return IS_PREFIX + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public static void checkNotNull(Object object, String message) {
@@ -136,7 +142,13 @@ final class Utils {
         Object value;
         String getterName = null;
         try {
-            getterName = Utils.makeGetterName(field.getName());
+            Class<?> fieldType = field.getType();
+            boolean isBoolField = fieldType == Boolean.class || fieldType == boolean.class;
+            if (isBoolField) {
+                getterName = Utils.makeIsGetterName(field.getName());
+            } else {
+                getterName = Utils.makeGetterName(field.getName());
+            }
             Method getter = clazz.getDeclaredMethod(getterName);
             value = getter.invoke(object);
         } catch (NoSuchMethodException e) {

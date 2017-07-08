@@ -58,7 +58,7 @@ public class DefaultBsonMapperTest {
             threads.add(new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    BsonMapper bsonMapper = DefaultBsonMapper.defaultBsonMapper(BsonMapperConfigBuilder.Builder().setMaxMapperLayerNum(9- finalI).build());
+                    BsonMapper bsonMapper = DefaultBsonMapper.defaultBsonMapper(BsonMapperConfigBuilder.Builder().setMaxMapperLayerNum(9 - finalI).build());
                     BsonTest bsonTest = bsonMapper.readFrom(bsonDocumentHasDeepLayer, BsonTest.class);
                     System.out.println(bsonTest);
                 }
@@ -135,6 +135,14 @@ public class DefaultBsonMapperTest {
         BsonDocument bsonDocument = bsonMapper.writeToBsonDocument(getObject());
         System.out.println(bsonDocument.toJson());
 
+    }
+
+    @Test
+    public void testIsGatter() throws Exception {
+        BsonTest bsonTest = new BsonTest();
+        bsonTest.setTestBoolean(true);
+        Object value = Utils.getFieldValue(BsonTest.class.getDeclaredField("testBoolean"), bsonTest);
+        System.out.println(value);
     }
 
     private BsonTest getObject() {
