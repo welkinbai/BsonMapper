@@ -13,11 +13,11 @@ a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse
 <dependency>
     <groupId>me.welkinbai</groupId>
     <artifactId>BsonMapper</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 ```groovy
-compile 'me.welkinbai:BsonMapper:0.0.1'
+compile 'me.welkinbai:BsonMapper:0.0.2'
 ```
 或者下载JAR  
 
@@ -97,11 +97,11 @@ compile 'me.welkinbai:BsonMapper:0.0.1'
 <dependency>
     <groupId>me.welkinbai</groupId>
     <artifactId>BsonMapper</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 ```groovy
-compile 'me.welkinbai:BsonMapper:0.0.1'
+compile 'me.welkinbai:BsonMapper:0.0.2'
 ```
 Or dawnload JAR 
 
