@@ -134,7 +134,8 @@ public class DefaultBsonMapper implements BsonMapper, MongoBsonMapper {
             return null;
         }
         BsonOutput bsonOutput = new BasicOutputBuffer();
-        BsonWriter bsonBinaryWriter = new BsonBinaryWriter(new BsonWriterSettings(bsonMapperConfig.getMaxMapperLayerNum()), new BsonBinaryWriterSettings(), bsonOutput);
+        BsonWriter bsonBinaryWriter = new BsonBinaryWriter(new BsonWriterSettings(bsonMapperConfig.getMaxMapperLayerNum()),
+                new BsonBinaryWriterSettings(bsonMapperConfig.getMaxDocumentSizeForBsonWriter()), bsonOutput);
         BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonBinaryWriter, object);
         return bsonOutput;
     }
@@ -145,7 +146,8 @@ public class DefaultBsonMapper implements BsonMapper, MongoBsonMapper {
             return null;
         }
         StringWriter writer = new StringWriter();
-        BsonWriter bsonWriter = new JsonWriter(writer, new JsonWriterSettings());
+        JsonWriterSettings jsonWriterSettings = bsonMapperConfig.getJsonWriterSettings();
+        BsonWriter bsonWriter = new JsonWriter(writer, jsonWriterSettings == null ? new JsonWriterSettings() : jsonWriterSettings);
         BsonValueConverterRepertory.getBsonDocumentConverter().encode(bsonWriter, object);
         return writer.toString();
     }

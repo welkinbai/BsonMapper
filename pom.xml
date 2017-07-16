@@ -6,7 +6,7 @@
 
     <groupId>me.welkinbai</groupId>
     <artifactId>BsonMapper</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>BsonMapper</name>
     <description>a light wrapper for mongo-java-driver Bson to convert POJO to Bson or in reverse</description>
     <url>https://github.com/welkinbai/BsonMapper</url>
